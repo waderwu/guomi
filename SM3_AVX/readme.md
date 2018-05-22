@@ -1,0 +1,1 @@
+SM3 realization based on AVX technique, fork and develop from [GmSSL project](https://github.com/JayDDee/cpuminer-opt/tree/master/algo/sm3), I have no idea why it hasn't shown in the original project but I found the source code in another irrelevant project :P
