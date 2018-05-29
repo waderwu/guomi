@@ -7,3 +7,5 @@ sm4fast:`gcc sm4fast.cpp -I ./ -std=c++11 -lstdc++ -o sm4fast`
   - 118MB/S
 - CUDA
   - 4037 MB/s
+- AVX
+  - 120.041326 MB/s
