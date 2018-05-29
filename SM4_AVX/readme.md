@@ -5,3 +5,6 @@
 密钥仍为128bit
 输出对应为16 blocks
 romalgol的很多原来的算法没有用到，尤其是优化过的4个Sbox没有用到，由于我自己没有完全理解4个Sbox的原理，所以暂时没有使用，因此理论上可能还有提升空间
+
+GCC compile:
+`g++ exp_sm4fast.cpp -fpermissive -I . -mavx2 -Wa,-q -std=c++11 -lstdc++ -o exp_sm4fast`
