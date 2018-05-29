@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <cstring>
 #include <cstdio>
-
+#include <inttypes.h>
 
 typedef uint8_t u1;
 typedef uint16_t u2;

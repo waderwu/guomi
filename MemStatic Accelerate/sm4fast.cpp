@@ -1,7 +1,7 @@
+
 #include "romangol.h"
 #include "liarod.h"
 #include "sm4fast.h"
-#include <stdlib.h>
 /*
 inline u4 SM4_T_slow(u4 b)
 {
@@ -37,7 +37,7 @@ inline u4 SM4_Tp(u4 b)
 /*
 * SM4 Encryption
 */
-void SM4_enc_block(const u1 in[SM4_BLOCK_SIZE], u1 out[SM4_BLOCK_SIZE], const u4 rkey[SM4_RND_KEY_SIZE / sizeof u4])
+void SM4_enc_block(const u1 in[SM4_BLOCK_SIZE], u1 out[SM4_BLOCK_SIZE], const u4 rkey[SM4_RND_KEY_SIZE / sizeof(u4)])
 {
 	static u4 B0 = load_be<u4>(in, 0);
 	static u4 B1 = load_be<u4>(in, 1);
@@ -61,7 +61,7 @@ void SM4_enc_block(const u1 in[SM4_BLOCK_SIZE], u1 out[SM4_BLOCK_SIZE], const u4
 /*
 * SM4 Decryption
 */
-void SM4_dec_block(const u1 in[SM4_BLOCK_SIZE], u1 out[SM4_BLOCK_SIZE], u4 rkey[SM4_RND_KEY_SIZE / sizeof u4])
+void SM4_dec_block(const u1 in[SM4_BLOCK_SIZE], u1 out[SM4_BLOCK_SIZE], u4 rkey[SM4_RND_KEY_SIZE / sizeof (u4)])
 {
 	static u4 B0 = load_be<u4>(in, 0);
 	static u4 B1 = load_be<u4>(in, 1);
@@ -87,7 +87,7 @@ void SM4_dec_block(const u1 in[SM4_BLOCK_SIZE], u1 out[SM4_BLOCK_SIZE], u4 rkey[
 /*
 * SM4 Key Schedule
 */
-void SM4_key_schedule(const u1 key[SM4_KEY_SIZE], u4 rkey[SM4_RND_KEY_SIZE / sizeof u4])
+void SM4_key_schedule(const u1 key[SM4_KEY_SIZE], u4 rkey[SM4_RND_KEY_SIZE / sizeof(u4)])
 {
 	// System parameter or family key
 	const u4 FK[4] = { 0xa3b1bac6, 0x56aa3350, 0x677d9197, 0xb27022dc };
@@ -110,7 +110,7 @@ void SM4_key_schedule(const u1 key[SM4_KEY_SIZE], u4 rkey[SM4_RND_KEY_SIZE / siz
 	K[2] = load_be<u4>(key, 2) ^ FK[2];
 	K[3] = load_be<u4>(key, 3) ^ FK[3];
 
-	forloop (i, 0, 32)
+	forloop (i,0,32)
 	{
 		K[i % 4] ^= SM4_Tp(K[(i+1)%4] ^ K[(i+2)%4] ^ K[(i+3)%4] ^ CK[i]);
 		rkey[i] = K[i % 4];
@@ -128,15 +128,18 @@ int main()
 	u1 p[SM4_BLOCK_SIZE] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10};
 	u1 c[SM4_BLOCK_SIZE];
 
-	u4 rkey[SM4_RND_KEY_SIZE / sizeof u4];
+	u4 rkey[SM4_RND_KEY_SIZE / sizeof(u4)];
 	SM4_key_schedule( key, rkey );
-
+	outputDword(rkey, 32);
+	
 	SM4_enc_block( p, c, rkey );
 	// should be: 0x68, 0x1e, 0xdf, 0x34, 0xd2, 0x06, 0x96, 0x5e, 0x86, 0xb3, 0xe9, 0x4f, 0x53, 0x6e, 0x42, 0x46,
-	outputChar(c, sizeof c);
+	printf("The encrypted data:\n");
+	outputChar(c, sizeof(c));
 
 	SM4_dec_block( c, c, rkey );
-	outputChar(c, sizeof c);
+	printf("The original data:\n");
+	outputChar(c, sizeof(c));
 
 	// return 0;
 
@@ -147,8 +150,5 @@ int main()
 		SM4_enc_block( p, p, rkey );
 	}
 
-	outputChar(p, sizeof p);
-
-	printf("time: %d ms\n", clock() - t );
-	system("pause");
+	printf("time: %ld ms\n", clock() - t );
 }

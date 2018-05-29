@@ -1,3 +1,4 @@
+#include <immintrin.h>				//Intel AVX compile support
 const static size_t SM4_BLOCK_SIZE = 16;
 const static size_t SM4_KEY_SIZE = 16;
 const static size_t SM4_RND_KEY_SIZE = 32 * 4;
@@ -320,6 +321,11 @@ template<typename T> inline u1 get_byte(size_t byte_num, T input)
 * @param i3 the fourth byte
 * @return i0 || i1 || i2 || i3
 */
+typedef unsigned int uint32_t;
+typedef unsigned char uint8_t;
+typedef uint8_t u1;
+typedef uint32_t u4;
+
 inline uint32_t make_uint32(uint8_t i0, uint8_t i1, uint8_t i2, uint8_t i3)
    {
    return ((static_cast<uint32_t>(i0) << 24) |
@@ -391,3 +397,110 @@ inline void store_be(uint8_t out[], T x0, T x1, T x2, T x3)
    store_be(x2, out + (2 * sizeof(T)));
    store_be(x3, out + (3 * sizeof(T)));
    }
+
+
+//AVX related define:
+//取t0为输入的第0,16,32,48,64...112个整数开始的4bit数据
+static __m256i mask_ffff;
+static __m256i vindex_0s;
+static __m256i vindex_4i;
+static __m256i vindex_swap;
+static __m256i vindex_read;
+static __m256i x0, x1, x2, x3, x4;
+static __m256i t0, t1, t2, t3, t4;
+static uint32_t SBOX32L[256 * 256];
+static uint32_t SBOX32H[256 * 256];
+static int *rk;
+
+#define GET_BLKS(x0, x1, x2, x3, in)					\
+	t0 = _mm256_i32gather_epi32((int *)(in+4*0), vindex_4i, 4);	\
+	t1 = _mm256_i32gather_epi32((int *)(in+4*1), vindex_4i, 4);	\
+	t2 = _mm256_i32gather_epi32((int *)(in+4*2), vindex_4i, 4);	\
+	t3 = _mm256_i32gather_epi32((int *)(in+4*3), vindex_4i, 4);	\
+	x0 = _mm256_shuffle_epi8(t0, vindex_swap);			\
+	x1 = _mm256_shuffle_epi8(t1, vindex_swap);			\
+	x2 = _mm256_shuffle_epi8(t2, vindex_swap);			\
+	x3 = _mm256_shuffle_epi8(t3, vindex_swap)
+
+#define PUT_BLKS(out, x0, x1, x2, x3)					\
+	t0 = _mm256_shuffle_epi8(x0, vindex_swap);			\
+	t1 = _mm256_shuffle_epi8(x1, vindex_swap);			\
+	t2 = _mm256_shuffle_epi8(x2, vindex_swap);			\
+	t3 = _mm256_shuffle_epi8(x3, vindex_swap);			\
+	_mm256_storeu_si256((__m256i *)(out+32*0), t0);			\
+	_mm256_storeu_si256((__m256i *)(out+32*1), t1);			\
+	_mm256_storeu_si256((__m256i *)(out+32*2), t2);			\
+	_mm256_storeu_si256((__m256i *)(out+32*3), t3);			\
+	x0 = _mm256_i32gather_epi32((int *)(in+32*0), vindex_read, 4);	\
+	x1 = _mm256_i32gather_epi32((int *)(in+32*1), vindex_read, 4);	\
+	x2 = _mm256_i32gather_epi32((int *)(in+32*2), vindex_read, 4);	\
+	x3 = _mm256_i32gather_epi32((int *)(in+32*3), vindex_read, 4);	\
+	_mm256_storeu_si256((__m256i *)(out+2*0), x0);			\
+	_mm256_storeu_si256((__m256i *)(out+2*1), x1);			\
+	_mm256_storeu_si256((__m256i *)(out+2*2), x2);			\
+	_mm256_storeu_si256((__m256i *)(out+2*3), x3)
+
+#define S(x0, t0, t1, t2)					\
+	t0 = _mm256_and_si256(x0, mask_ffff);			\
+	t1 = _mm256_i32gather_epi32(SBOX32L, t0, 4);		\
+	t0 = _mm256_srli_epi32(x0, 16);				\
+	t2 = _mm256_i32gather_epi32(SBOX32H, t0, 4);		\
+	x0 = _mm256_xor_si256(t1, t2)
+
+#define ROT(r0, x0, i, t0, t1)					\
+	t0 = _mm256_slli_epi32(x0, i);				\
+	t1 = _mm256_srli_epi32(x0,32-i);			\
+	r0 = _mm256_xor_si256(t0, t1)
+
+#define L(x0, t0, t1, t2, t3, t4)				\
+	ROT(t0, x0,  2, t2, t3);				\
+	ROT(t1, x0, 10, t2, t3);				\
+	t4 = _mm256_xor_si256(t0, t1);				\
+	ROT(t0, x0, 18, t2, t3);				\
+	ROT(t1, x0, 24, t2, t3);				\
+	t3 = _mm256_xor_si256(t0, t1);				\
+	t2 = _mm256_xor_si256(x0, t3);				\
+	x0 = _mm256_xor_si256(t2, t4)
+
+#define ROUND(x0, x1, x2, x3, x4, i)				\
+	t0 = _mm256_i32gather_epi32(rk+i, vindex_0s, 4);	\
+	t1 = _mm256_xor_si256(x1, x2);				\
+	t2 = _mm256_xor_si256(x3, t0);				\
+	t0 = _mm256_xor_si256(t1, t2);				\
+	S(t0, x4, t1, t2);					\
+	L(t0, x4, t1, t2, t3, t4);				\
+	x4 = _mm256_xor_si256(x0, t0);
+
+#define ROUNDS(x0, x1, x2, x3, x4)		\
+	ROUND(x0, x1, x2, x3, x4, 0);		\
+	ROUND(x1, x2, x3, x4, x0, 1);		\
+	ROUND(x2, x3, x4, x0, x1, 2);		\
+	ROUND(x3, x4, x0, x1, x2, 3);		\
+	ROUND(x4, x0, x1, x2, x3, 4);		\
+	ROUND(x0, x1, x2, x3, x4, 5);		\
+	ROUND(x1, x2, x3, x4, x0, 6);		\
+	ROUND(x2, x3, x4, x0, x1, 7);		\
+	ROUND(x3, x4, x0, x1, x2, 8);		\
+	ROUND(x4, x0, x1, x2, x3, 9);		\
+	ROUND(x0, x1, x2, x3, x4, 10);		\
+	ROUND(x1, x2, x3, x4, x0, 11);		\
+	ROUND(x2, x3, x4, x0, x1, 12);		\
+	ROUND(x3, x4, x0, x1, x2, 13);		\
+	ROUND(x4, x0, x1, x2, x3, 14);		\
+	ROUND(x0, x1, x2, x3, x4, 15);		\
+	ROUND(x1, x2, x3, x4, x0, 16);		\
+	ROUND(x2, x3, x4, x0, x1, 17);		\
+	ROUND(x3, x4, x0, x1, x2, 18);		\
+	ROUND(x4, x0, x1, x2, x3, 19);		\
+	ROUND(x0, x1, x2, x3, x4, 20);		\
+	ROUND(x1, x2, x3, x4, x0, 21);		\
+	ROUND(x2, x3, x4, x0, x1, 22);		\
+	ROUND(x3, x4, x0, x1, x2, 23);		\
+	ROUND(x4, x0, x1, x2, x3, 24);		\
+	ROUND(x0, x1, x2, x3, x4, 25);		\
+	ROUND(x1, x2, x3, x4, x0, 26);		\
+	ROUND(x2, x3, x4, x0, x1, 27);		\
+	ROUND(x3, x4, x0, x1, x2, 28);		\
+	ROUND(x4, x0, x1, x2, x3, 29);		\
+	ROUND(x0, x1, x2, x3, x4, 30);		\
+	ROUND(x1, x2, x3, x4, x0, 31)
