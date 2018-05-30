@@ -17,3 +17,6 @@ MemStatic|3.05|61.0|81.3|101.4|103.4|108.5|119.6|
 AVX|-|-|61|33|63|51|119.6|
 
 单位MB/s
+
+测试机内核版本
+Linux myubuntu 4.4.0-127-generic #153-Ubuntu SMP Sat May 19 10:58:46 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
