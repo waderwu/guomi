@@ -1,8 +1,8 @@
 # guomi
 
-sm4fast:`gcc sm4fast.cpp -I ./ -std=c++11 -lstdc++ -o sm4fast`
-openmp: `gcc sm4fast_openmp.cpp -I ./ -std=c++11 -lstdc++ -O3 -o openmp  -fopenmp`
-cuda：`nvcc test_share.cu -o share`,`nvcc test_constant.cu -o constant`
+- sm4fast:`gcc sm4fast.cpp -I ./ -std=c++11 -lstdc++ -o sm4fast`
+- openmp: `gcc sm4fast_openmp.cpp -I ./ -std=c++11 -lstdc++ -O3 -o openmp  -fopenmp`
+- cuda：`nvcc test_share.cu -o share`,`nvcc test_constant.cu -o constant`
 
 
 大概的测试数据
