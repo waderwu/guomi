@@ -26,10 +26,37 @@ cpuB|120.107496
 
 - cpuA：Intel(R) Core(TM) i9-7900X CPU @ 3.30GHz
 - cpuB：Intel(R) Core(TM) i7-4720HQ CPU @ 2.60GHz
+- 测试时文件大小为33554432 Byte
 
 单位MB/s
+- cuda size 536870912 Byte
 
-服务器
+thread|share|constant
+-|-
+32|2118.898338|4081.925521
+64|3401.699521|4729.136840
+128|4430.560483|4693.759683
+256|4486.544747|4570.938828
+512|4423.058649|4377.228154
+1024|4034.005405|4104.274217
+GPU相关参数
+```
+Device Name : GeForce GTX 950M.
+totalGlobalMem : 2100232192.
+sharedMemPerBlock : 49152.
+regsPerBlock : 65536.
+warpSize : 32.
+memPitch : 2147483647.
+maxThreadsPerBlock : 1024.
+maxThreadsDim[0 - 2] : 1024 1024 64.
+maxGridSize[0 - 2] : 2147483647 65535 65535.
+totalConstMem : 65536.
+major.minor : 5.0.
+clockRate : 1124000.
+textureAlignment : 512.
+deviceOverlap : 1.
+multiProcessorCount : 5.
+```
 
 测试机内核版本
 Linux myubuntu 4.4.0-127-generic #153-Ubuntu SMP Sat May 19 10:58:46 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
