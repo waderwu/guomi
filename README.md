@@ -30,6 +30,7 @@ cpuC|3.051758|61.035156|81.380208|51.398026|120.192308|123.031496|130.410029
 
 - cpuA：Intel(R) Core(TM) i9-7900X CPU @ 3.30GHz
 - cpuB：Intel(R) Core(TM) i7-4720HQ CPU @ 2.60GHz
+- cpuC: Intel(R) Xeon(R) CPU E5-2643 v3 @ 3.40GHz
 - 测试时文件大小为33554432 Byte
 
 单位MB/s
