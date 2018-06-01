@@ -75,3 +75,14 @@ Built on Fri_Nov__3_21:07:56_CDT_2017
 Cuda compilation tools, release 9.1, V9.1.85
 ```
 
+gmssl部分速度测试
+- sms4
+```
+type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes  16384 bytes
+sms4 cbc         93230.45k    93896.32k    93871.87k    93982.04k    94183.42k    94240.77k
+```
+-sm3
+```
+type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes  16384 bytes
+sm3              42156.40k    92510.49k   153072.98k   186386.77k   200029.53k   201900.03k
+```
