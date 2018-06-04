@@ -86,3 +86,76 @@ sms4 cbc         93230.45k    93896.32k    93871.87k    93982.04k    94183.42k  
 type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes  16384 bytes
 sm3              42156.40k    92510.49k   153072.98k   186386.77k   200029.53k   201900.03k
 ```
+crypto++ sm3速度
+```
+SM3
+size: 16 
+time: 0.000003 s
+speed: 5.086263 
+size: 64 
+time: 0.000001 s
+speed: 61.035156 
+size: 256 
+time: 0.000002 s
+speed: 122.070312 
+size: 1024 
+time: 0.000009 s
+speed: 108.506944 
+size: 8192 
+time: 0.000049 s
+speed: 159.438776 
+size: 16384 
+time: 0.000089 s
+speed: 175.561798 
+size: 1048576 
+time: 0.004606 s
+speed: 217.108120 
+```
+sm3fast.c
+```
+size: 16 
+time: 0.000004 s
+speed: 3.814697 
+size: 64 
+time: 0.000002 s
+speed: 30.517578 
+size: 256 
+time: 0.000002 s
+speed: 122.070312 
+size: 1024 
+time: 0.000006 s
+speed: 162.760417 
+size: 8192 
+time: 0.000040 s
+speed: 195.312500 
+size: 16384 
+time: 0.000081 s
+speed: 192.901235 
+size: 1048576 
+time: 0.004456 s
+speed: 224.416517 
+```
+sm3 手动展开的
+```
+size: 16 
+time: 0.000006 s
+speed: 2.543132 
+size: 64 
+time: 0.000002 s
+speed: 30.517578 
+size: 256 
+time: 0.000004 s
+speed: 61.035156 
+size: 1024 
+time: 0.000007 s
+speed: 139.508929 
+size: 8192 
+time: 0.000044 s
+speed: 177.556818 
+size: 16384 
+time: 0.000087 s
+speed: 179.597701 
+size: 1048576 
+time: 0.004130 s
+speed: 242.130751 
+```
