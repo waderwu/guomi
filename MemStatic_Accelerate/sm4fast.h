@@ -2,7 +2,11 @@
 const static size_t SM4_BLOCK_SIZE = 16;
 const static size_t SM4_KEY_SIZE = 16;
 const static size_t SM4_RND_KEY_SIZE = 32 * 4;
+#define test_blocks (2<<20)
 
+void SM4_enc_block(const u1 in[SM4_BLOCK_SIZE], u1 out[SM4_BLOCK_SIZE], const u4 rkey[SM4_RND_KEY_SIZE / sizeof(u4)]);
+void SM4_dec_block(const u1 in[SM4_BLOCK_SIZE], u1 out[SM4_BLOCK_SIZE], u4 rkey[SM4_RND_KEY_SIZE / sizeof (u4)]);
+void SM4_key_schedule(const u1 key[SM4_KEY_SIZE], u4 rkey[SM4_RND_KEY_SIZE / sizeof(u4)]);
 const u1 Sbox[256] =
 {
 	0xD6, 0x90, 0xE9, 0xFE, 0xCC, 0xE1, 0x3D, 0xB7, 0x16, 0xB6, 0x14, 0xC2, 0x28, 0xFB, 0x2C, 0x05,

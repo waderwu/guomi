@@ -1,0 +1,5 @@
+PING 3 (0.0.0.3) 56(124) bytes of data.
+
+--- 3 ping statistics ---
+33 packets transmitted, 0 received, 100% packet loss, time 31999ms
+

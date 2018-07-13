@@ -14,7 +14,7 @@ typedef uint32_t u4;
 #define SM4_BLOCK_SIZE 16
 #define SM4_KEY_SIZE 16
 #define SM4_RND_KEY_SIZE 128
-#define test_blocks 1 << 25
+#define test_blocks (1 << 25)
 
 
 __constant__ const u1 Sbox[256] =

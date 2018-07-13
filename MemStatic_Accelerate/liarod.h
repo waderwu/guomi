@@ -1,5 +1,4 @@
 // relying on romangol.h
-
 static void outputChar(const_buf text, size_t len)
 {
 	forloop( i, 0, len )

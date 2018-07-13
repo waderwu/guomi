@@ -19,7 +19,7 @@ class NonCopyable
 protected:
 	NonCopyable () {}
 	~NonCopyable () {} /// Protected non-virtual destructor
-private: 
+private:
 	NonCopyable (NonCopyable const &);
 	NonCopyable & operator = (NonCopyable const &);
 };
@@ -30,7 +30,7 @@ private:
 
 
 /* ------------------------------- rotation ------------------------------- */
-	
+
 /* The masking of the right shift is needed to allow n == 0 (using
    just 32 - n and 64 - n results in undefined behaviour). Most uses
    of these macros use a constant and non-zero rotation count. */
@@ -50,8 +50,8 @@ private:
 #define SHL32(x,n) (((x) & 0xFFFFFFFF) << (n))
 
 /* ------------------------------- rotation end ------------------------------- */
-	
-	
+
+
 /* ------------------------------- packing and unpacking begin ------------------------------- */
 
 #define GET_32BIT_LSB_FIRST(cp) \
@@ -377,10 +377,10 @@ store32_be(uint8_t dst[4], uint32_t w)
 #endif
 }
 /* ------------------------------- packing and unpacking end ------------------------------- */
-	
-	
-	
-	
+
+
+
+
 /* ------------------------------- loop begin ------------------------------- */
 
 #define forloop(i, start, end) for ( size_t (i) = (start); (i) < (end); ++(i) )
@@ -395,7 +395,7 @@ store32_be(uint8_t dst[4], uint32_t w)
 		  (src) += (blocksize)) )
 
 /* ------------------------------- loop end ------------------------------- */
-	
+
 /* ------------------------------- arithmatic begin ------------------------------- */
 #define bitswap(L, R, n, mask) ( swap = mask & ( (R >> n) ^ L ), R ^= swap << n, L ^= swap)
 /* ------------------------------- arithmatic end ------------------------------- */

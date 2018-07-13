@@ -206,7 +206,7 @@ int main(int argc,char **argv)
 	// key:   01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 10
 	// cipher: 68 1e df 34 d2 06 96 5e 86 b3 e9 4f 53 6e 42 46
 
-	/* 
+	/*
 		to achieve avx2 best performance, encrypt 8 blocks at the same time, the data can be devided into 16 blocks each, each block contains 128bit
 		gmssl has not fully developed the application of the avx2-encryption process, some of the functions may not work properly.
 	*/
@@ -231,33 +231,32 @@ int main(int argc,char **argv)
 		0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe, 0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
 		0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe, 0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01
 	};
-	
+
 	int county=0;
 	float avg = 0;
-	FILE *fin, *fkey, *fout;
-	for (int i = 0; i < argc; i++) {
-		if (!strcmp(argv[i], "-i")) {
-			fin=fopen(argv[i + 1], "r+");
-			fread(p, 1, 2048, fin);
-			fclose(fin);
-			i++;
-		}
-		if (!strcmp(argv[i], "-key")) {
-			fkey = fopen(argv[i + 1], "r+");
-			fread(key, 1, 16, fkey);
-			fclose(fkey);
-			i++;
-		}
-		if (!strcmp(argv[i], "-o")) {
-			fout = fopen(argv[i + 1], "w+");
-			i++;
-		}
-	}
-	fin = fopen("input", "r+");
-	fread(p, 1, 2048, fin);
-	fclose(fin);
+	// FILE *fin, *fkey, *fout;
+	// for (int i = 0; i < argc; i++) {
+	// 	if (!strcmp(argv[i], "-i")) {
+	// 		fin=fopen(argv[i + 1], "r+");
+	// 		fread(p, 1, 2048, fin);
+	// 		fclose(fin);
+	// 		i++;
+	// 	}
+	// 	if (!strcmp(argv[i], "-key")) {
+	// 		fkey = fopen(argv[i + 1], "r+");
+	// 		fread(key, 1, 16, fkey);
+	// 		fclose(fkey);
+	// 		i++;
+	// 	}
+	// 	if (!strcmp(argv[i], "-o")) {
+	// 		fout = fopen(argv[i + 1], "w+");
+	// 		i++;
+	// 	}
+	// }
+	// fin = fopen("input", "r+");
+	// fread(p, 1, 2048, fin);
+	// fclose(fin);
 	printf("\n\n-----------------------------------------\nFor each Test, encrypt 256 bytes for 1000000/16 rounds");
-	system("ping localhost -n 3 > nul");
 	forloop(kkk, 0, 1) {
 		srand(time(NULL));
 		for (int i = 0; i < 16 * SM4_BLOCK_SIZE; i++) {
@@ -276,25 +275,32 @@ int main(int argc,char **argv)
 		clock_t t = clock();
 
 		// SM4_enc_block( p, c, rkey );
-		for (int j = 0; j < 1000000 / 16; j++) {
-// #pragma omp parallel for
-			for (i = 0, pp = (int*)c; i < 256 / (SM4_BLOCK_SIZE * 16); i++, pp += SM4_BLOCK_SIZE * 16 / 4) {
-				sms4_avx2_encrypt_16blocks(p, pp, rkey); //	1 block = 128 bit
+		int blocks[5] = {16,64,512,1024,2<<20};
+		for (int k=0; k<5; k++)
+		{
+			for (int j = 0; j <  blocks[k]/ 16; j++) {
+
+				for (i = 0, pp = (int*)c; i < 256 / (SM4_BLOCK_SIZE * 16); i++, pp += SM4_BLOCK_SIZE * 16 / 4) {
+					sms4_avx2_encrypt_16blocks(p, pp, rkey); //	1 block = 128 bit
+				}
+
 			}
+			clock_t avg = clock() - t;
+			//printf("The encrypted data after 1000000/16 times enc:\n");
+			// if (fout) {
+			// 	//outputChar(c, 16 * SM4_BLOCK_SIZE, fout);
+			// 	fputs((char*) c,fout);
+			// 	fclose(fout);
+			// }
+			// printf("time: %d ms\n\n\n", tt);
+			double tt = (double)(avg)/(CLOCKS_PER_SEC);
+		  double speed =(double) (blocks[k]*16)/(1024*1024*tt);
+			printf("time: %f s\nspeed: %f \n",tt,speed);
 		}
-		clock_t tt = clock() - t;
-		//printf("The encrypted data after 1000000/16 times enc:\n");
-		if (fout) {
-			//outputChar(c, 16 * SM4_BLOCK_SIZE, fout);
-			fputs((char*) c,fout);
-			fclose(fout);
+
+	// printf("Avg time for each test:%f\nAbout %f MB/s\n", avg/100, 16*16* 1000000 / 16/(avg/100/1000)/1024/1024);
+	// system("pause");
 		}
-		printf("time: %d ms\n\n\n", tt);
-		if (tt > 1000) county++;
-		avg += tt;
-		
-	}
-	printf("Avg time for each test:%f\nAbout %f MB/s\n", avg/100, 16*16* 1000000 / 16/(avg/100/1000)/1024/1024);
-	system("pause");
+
 
 }

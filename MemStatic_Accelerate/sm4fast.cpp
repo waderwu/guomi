@@ -1,12 +1,11 @@
-
 #include "romangol.h"
 #include "liarod.h"
 #include "sm4fast.h"
+#include <time.h>
 /*
 inline u4 SM4_T_slow(u4 b)
 {
 	const u4 t = make_uint32(Sbox[get_byte(0,b)], Sbox[get_byte(1,b)], Sbox[get_byte(2,b)], Sbox[get_byte(3,b)]);
-
 	// L linear transform
 	return t ^ rotl<2>(t) ^ rotl<10>(t) ^ rotl<18>(t) ^ rotl<24>(t);
 }
@@ -115,40 +114,4 @@ void SM4_key_schedule(const u1 key[SM4_KEY_SIZE], u4 rkey[SM4_RND_KEY_SIZE / siz
 		K[i % 4] ^= SM4_Tp(K[(i+1)%4] ^ K[(i+2)%4] ^ K[(i+3)%4] ^ CK[i]);
 		rkey[i] = K[i % 4];
 	}
-}
-
-
-#include <time.h>
-int main()
-{
-	// plain: 01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 10
-	// key:   01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 10
-	// cipher: 68 1e df 34 d2 06 96 5e 86 b3 e9 4f 53 6e 42 46
-	u1 key[SM4_KEY_SIZE] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10};
-	u1 p[SM4_BLOCK_SIZE] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10};
-	u1 c[SM4_BLOCK_SIZE];
-
-	u4 rkey[SM4_RND_KEY_SIZE / sizeof(u4)];
-	SM4_key_schedule( key, rkey );
-	outputDword(rkey, 32);
-	
-	SM4_enc_block( p, c, rkey );
-	// should be: 0x68, 0x1e, 0xdf, 0x34, 0xd2, 0x06, 0x96, 0x5e, 0x86, 0xb3, 0xe9, 0x4f, 0x53, 0x6e, 0x42, 0x46,
-	printf("The encrypted data:\n");
-	outputChar(c, sizeof(c));
-
-	SM4_dec_block( c, c, rkey );
-	printf("The original data:\n");
-	outputChar(c, sizeof(c));
-
-	// return 0;
-
-	clock_t t = clock();
-
-	forloop (i, 0, 1000000)
-	{
-		SM4_enc_block( p, p, rkey );
-	}
-
-	printf("time: %ld ms\n", clock() - t );
 }

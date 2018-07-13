@@ -1,6 +1,10 @@
 #include<cstdio>
 #include <cuda.h>
 #include <time.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 typedef unsigned int uint32_t;
 typedef unsigned char uint8_t;
@@ -14,7 +18,8 @@ typedef uint32_t u4;
 #define SM4_BLOCK_SIZE 16
 #define SM4_KEY_SIZE 16
 #define SM4_RND_KEY_SIZE 128
-#define test_blocks 1048576
+#define test_blocks (1 <<25)
+#define SIZE (2<<28)
 
 
 __constant__ const u1 Sbox[256] =
