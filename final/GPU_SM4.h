@@ -17,7 +17,6 @@ typedef uint32_t u4;
 #define SM4_BLOCK_SIZE 16
 #define SM4_KEY_SIZE 16
 #define SM4_RND_KEY_SIZE 128
-#define test_blocks (1 << 25)
 
 
 __constant__ const u1 Sbox[256] =
@@ -304,6 +303,7 @@ __constant__ const u4 Sbox_T24[256] =
   B3 ^= F(B0 ^ B1 ^ B2 ^ rkey[k3]); \
 } while(0)
 
+void outputChar(u1 *text, size_t len);
 
 template<typename T>
 __device__ __forceinline__ u1 get_byte(size_t byte_num, T input);
@@ -328,14 +328,11 @@ __device__ __forceinline__ T rotl(T input);
 
 __device__ __forceinline__ uint32_t make_uint32(uint8_t i0, uint8_t i1, uint8_t i2, uint8_t i3);
 
-
 __device__ __forceinline__ u4 SM4_Tp(u4 b);
 
 __device__ __forceinline__ u4 SM4_T(u4 b);
 
 __global__ void SM4_key_schedule(const u1 key[SM4_KEY_SIZE], u4 rkey[SM4_RND_KEY_SIZE / sizeof(u4)]);
-
-static void outputChar(u1 * text, size_t len);
 
 __device__ void SM4_enc_block(const u1 in[SM4_BLOCK_SIZE], u1 out[SM4_BLOCK_SIZE], const u4 rkey[SM4_RND_KEY_SIZE / sizeof(u4)]);
 

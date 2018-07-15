@@ -202,3 +202,14 @@ void gpu_sm4_decrypt(uint8_t *plain, const uint8_t *key, const uint8_t *cipher, 
   SM4_dec_blocks<<<numBlocks,blockSize>>>(n_block, cipher, plain, rkey);
   cudaDeviceSynchronize();
 }
+
+void outputChar(u1 *text, size_t len)
+{
+    forloop( i, 0, len )
+    {
+        printf("0x%02x, ", text[i]);
+        if (i % 16 == 15)
+            puts("");
+    }
+    puts("");
+}

@@ -1,5 +1,7 @@
 #include "GPU_SM4.h"
 
+#define test_blocks (8)
+
 int main()
 {
 	u1 * key;
@@ -18,30 +20,17 @@ int main()
 		key[i] = key2[i];
 	}
 
-  for (int i=0; i<test_blocks*16; i++)
-  {
-    p[i] = p2[i%16];
-  }
+  	for (int i=0; i<test_blocks*16; i++)
+  	{
+    	p[i] = p2[i%16];
+  	}
 
-  gpu_sm4_encrypt(p,key,c,test_blocks);
+  	gpu_sm4_encrypt(p,key,c,test_blocks);
 
-  for (int k=0; k<16*2; k++)
-	{
-		printf("%02x ",c[k]);
-	}
+  	outputChar(c, 16);
 
-  for (int i=0; i<16*2; i++)
-	{
-		p[i] = 0x01;
-	}
+  	gpu_sm4_decrypt(p,key,c,test_blocks);
 
-  printf("\n");
-
-  gpu_sm4_decrypt(p,key,c,test_blocks);
-
-  for (int k=0; k<16*2; k++)
-	{
-		printf("%02x ",p[k]);
-	}
+  	outputChar(p, 16);
 
 }
