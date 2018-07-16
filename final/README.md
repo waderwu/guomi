@@ -88,7 +88,6 @@ SM4_decrypt>>> blocks: 1048576, time: 0.131697 s, speed: 121.491017 Mb/s
 
 ## OpenMP
 - g++ OpenMP_SM4.cpp OpenMP_SM4_TEST.cpp  -std=c++11 -O3 -o OpenMP_SM4  -fopenmp
-
 ```
 SM4_encrypt>>> blocks: 16, time: 0.000007 s, speed: 35.331494 Mb/s
 SM4_decrypt>>> blocks: 16, time: 0.000007 s, speed: 36.276467 Mb/s
@@ -105,3 +104,6 @@ SM4_decrypt>>> blocks: 262144, time: 0.034435 s, speed: 116.161827 Mb/s
 SM4_encrypt>>> blocks: 1048576, time: 0.141603 s, speed: 112.992300 Mb/s
 SM4_decrypt>>> blocks: 1048576, time: 0.142901 s, speed: 111.965337 Mb/s
 ```
+
+## AVX
+- g++ AVX_SM4.cpp AVX_SM4_TEST.cpp -fpermissive  -mavx2 -Wa,-q -std=c++11  -O3 -o AVX_SM4
