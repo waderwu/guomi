@@ -346,4 +346,8 @@ __global__ void SM4_dec_blocks(int n_block, const u1 *in, u1 *out, const u4 *rke
 
 void gpu_sm4_decrypt(uint8_t *plain, const uint8_t *key, const uint8_t *cipher, uint n_block);
 
+void benchmark_sm4_encrypt(const uint8_t *p, const uint8_t *key, uint8_t *c, uint n_block);
+
+void benchmark_sm4_decrypt(uint8_t *p, const uint8_t *key, const uint8_t *c, uint n_block);
+
 #endif

@@ -1,6 +1,6 @@
 #include "GPU_SM4.h"
 
-#define test_blocks (8)
+#define test_blocks (1<<25)
 
 int main()
 {
@@ -20,17 +20,41 @@ int main()
 		key[i] = key2[i];
 	}
 
-  	for (int i=0; i<test_blocks*16; i++)
-  	{
-    	p[i] = p2[i%16];
-  	}
+  for (int i=0; i<test_blocks*16; i++)
+  {
+    p[i] = p2[i%16];
+  }
 
-  	gpu_sm4_encrypt(p,key,c,test_blocks);
+  gpu_sm4_encrypt(p,key,c,4);
 
-  	outputChar(c, 16);
+  outputChar(c, 16*4);
 
-  	gpu_sm4_decrypt(p,key,c,test_blocks);
+  gpu_sm4_decrypt(p,key,c,4);
 
-  	outputChar(p, 16);
+  outputChar(p, 16*4);
 
+	//benchmark
+	benchmark_sm4_encrypt(p,key,c,1<<4);
+	benchmark_sm4_decrypt(p,key,c,1<<4);
+
+	benchmark_sm4_encrypt(p,key,c,1<<8);
+	benchmark_sm4_decrypt(p,key,c,1<<8);
+
+	benchmark_sm4_encrypt(p,key,c,1<<10);
+	benchmark_sm4_decrypt(p,key,c,1<<10);
+
+	benchmark_sm4_encrypt(p,key,c,1<<12);
+	benchmark_sm4_decrypt(p,key,c,1<<12);
+
+	benchmark_sm4_encrypt(p,key,c,1<<16);
+	benchmark_sm4_decrypt(p,key,c,1<<16);
+
+	benchmark_sm4_encrypt(p,key,c,1<<18);
+	benchmark_sm4_decrypt(p,key,c,1<<18);
+
+	benchmark_sm4_encrypt(p,key,c,1<<20);
+	benchmark_sm4_decrypt(p,key,c,1<<20);
+
+	benchmark_sm4_encrypt(p,key,c,test_blocks);
+	benchmark_sm4_decrypt(p,key,c,test_blocks);
 }

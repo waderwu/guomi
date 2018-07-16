@@ -1,25 +1,57 @@
 #include "Static_SM4.h"
+#define test_blocks (1<<25)
 
 int main()
 {
-    // plain: 01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 10
-    // key:   01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 10
-    // cipher: 68 1e df 34 d2 06 96 5e 86 b3 e9 4f 53 6e 42 46
+  // plain: 01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 10
+  // key:   01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 10
+  // cipher: 68 1e df 34 d2 06 96 5e 86 b3 e9 4f 53 6e 42 46
 
-     u1 key[SM4_KEY_SIZE] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10};
-     u1 p[SM4_BLOCK_SIZE] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10};
-     u1 c[SM4_BLOCK_SIZE];
+  u1 key[SM4_KEY_SIZE] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10};
+  u1 tmp[SM4_BLOCK_SIZE] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10};
 
-     static_sm4_encrypt(p, key, c);
-     outputChar(c, sizeof (c));
+  u1 *p = (u1 *) malloc(sizeof(u1)*16*test_blocks);
+  u1 *c = (u1 *) malloc(sizeof(u1)*16*test_blocks);
 
-     static_sm4_decrypt(c, key, c);
-     outputChar(c, sizeof (c));
+  for (int i=0; i<test_blocks*16; i++)
+  {
+    p[i] = tmp[i%16];
+  }
 
-     forloop (i, 0, 1000000)
-     {
-     	static_sm4_encrypt(p, key, p);
-     }
+  static_sm4_encrypt(p, key, c);
+  outputChar(c, 16);
 
-    outputChar(p, 16);
+  static_sm4_decrypt(c, key, c);
+  outputChar(c, 16);
+
+  forloop (i, 0, 1000000)
+  {
+    static_sm4_encrypt(p, key, p);
+  }
+
+  outputChar(p, 16);
+
+  benchmark_sm4_encrypt(p,key,c,1<<4);
+ 	benchmark_sm4_decrypt(p,key,c,1<<4);
+
+ 	benchmark_sm4_encrypt(p,key,c,1<<8);
+ 	benchmark_sm4_decrypt(p,key,c,1<<8);
+
+ 	benchmark_sm4_encrypt(p,key,c,1<<10);
+ 	benchmark_sm4_decrypt(p,key,c,1<<10);
+
+ 	benchmark_sm4_encrypt(p,key,c,1<<12);
+ 	benchmark_sm4_decrypt(p,key,c,1<<12);
+
+ 	benchmark_sm4_encrypt(p,key,c,1<<16);
+ 	benchmark_sm4_decrypt(p,key,c,1<<16);
+
+ 	benchmark_sm4_encrypt(p,key,c,1<<18);
+ 	benchmark_sm4_decrypt(p,key,c,1<<18);
+
+ 	benchmark_sm4_encrypt(p,key,c,1<<20);
+ 	benchmark_sm4_decrypt(p,key,c,1<<20);
+  
+ 	//benchmark_sm4_encrypt(p,key,c,test_blocks);
+ 	//benchmark_sm4_decrypt(p,key,c,test_blocks);
 }

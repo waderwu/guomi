@@ -5,6 +5,7 @@
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
+#include <time.h>
 
 typedef uint8_t u1;
 typedef uint16_t u2;
@@ -819,10 +820,24 @@ inline void store_be(uint8_t out[], T x0, T x1, T x2, T x3)
 }
 
 inline u4 SM4_T(u4 b);
+
 inline u4 SM4_Tp(u4 b);
+
 void SM4_enc_block(const u1 in[SM4_BLOCK_SIZE], u1 out[SM4_BLOCK_SIZE], const u4 rkey[SM4_RND_KEY_SIZE / sizeof (u4)]);
+
 void SM4_dec_block(const u1 in[SM4_BLOCK_SIZE], u1 out[SM4_BLOCK_SIZE], u4 rkey[SM4_RND_KEY_SIZE / sizeof (u4)]);
+
 void SM4_key_schedule(const u1 key[SM4_KEY_SIZE], u4 rkey[SM4_RND_KEY_SIZE / sizeof (u4)]);
+
 void static_sm4_encrypt(const uint8_t *plain, const uint8_t *key, uint8_t *cipher);
+
 void static_sm4_decrypt(uint8_t *plain, const uint8_t *key, const uint8_t *cipher);
+
+void static_sm4_enc_blocks(const uint8_t *p, const uint8_t *key, uint8_t *c, uint n_block);
+
+void static_sm4_dec_blocks(uint8_t *p, const uint8_t *key, const uint8_t *c, uint n_block);
+
+void benchmark_sm4_encrypt(const uint8_t *p, const uint8_t *key, uint8_t *c, uint n_block);
+
+void benchmark_sm4_decrypt(uint8_t *p, const uint8_t *key, const uint8_t *c, uint n_block);
 #endif

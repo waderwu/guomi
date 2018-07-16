@@ -128,6 +128,56 @@ void static_sm4_decrypt(uint8_t *plain, const uint8_t *key, const uint8_t *ciphe
 {
     u4 rkey[SM4_RND_KEY_SIZE / sizeof (u4)];
     SM4_key_schedule( key, rkey );
-    
-    SM4_dec_block(cipher, plain, rkey);   
+
+    SM4_dec_block(cipher, plain, rkey);
+}
+
+void static_sm4_enc_blocks(const uint8_t *p, const uint8_t *key, uint8_t *c, uint n_block)
+{
+  u4 rkey[SM4_RND_KEY_SIZE / sizeof (u4)];
+  SM4_key_schedule( key, rkey );
+
+  for (int i=0; i<n_block; i++)
+  {
+    SM4_enc_block(p, c, rkey);
+  }
+}
+
+void static_sm4_dec_blocks(uint8_t *p, const uint8_t *key, const uint8_t *c, uint n_block)
+{
+  u4 rkey[SM4_RND_KEY_SIZE / sizeof (u4)];
+  SM4_key_schedule( key, rkey );
+
+  for (int i=0; i<n_block; i++)
+  {
+    SM4_dec_block(c, p, rkey);
+  }
+}
+
+
+void benchmark_sm4_encrypt(const uint8_t *p, const uint8_t *key, uint8_t *c, uint n_block)
+{
+  int turns = 100;
+	clock_t t=clock();
+  for(int i=0; i<turns; i++)
+  {
+    static_sm4_enc_blocks(p,key,c,n_block);
+  }
+	double tt = (double)(clock() - t)/(CLOCKS_PER_SEC*turns);
+	double speed =(double) (16*n_block)/(1024*1024*tt);
+	printf("SM4_encrypt>>> blocks: %d, time: %f s, speed: %f Mb/s\n",n_block,tt,speed);
+}
+
+
+void benchmark_sm4_decrypt(uint8_t *p, const uint8_t *key, const uint8_t *c, uint n_block)
+{
+  int turns = 100;
+	clock_t t=clock();
+  for(int i=0; i<turns; i++)
+  {
+    static_sm4_dec_blocks(p,key,c,n_block);
+  }
+	double tt = (double)(clock() - t)/(CLOCKS_PER_SEC*turns);
+	double speed =(double) (16*n_block)/(1024*1024*tt);
+	printf("SM4_decrypt>>> blocks: %d, time: %f s, speed: %f Mb/s\n",n_block,tt,speed);
 }
