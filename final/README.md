@@ -1,12 +1,35 @@
 ## GPU
-- 需要安装cuda
+- cuda环境配置
   - https://developer.nvidia.com/cuda-downloads 可参照此页面进行安装
-- nvcc GPU_SM4.cu GPU_SM4_TEST.cu -O3 -o GPU_SM4
+- 编译方式
+  - nvcc GPU_SM4.cu GPU_SM4_TEST.cu -O3 -o GPU_SM4
+- 调用接口
+  - `void gpu_sm4_encrypt(const uint8_t *plain, const uint8_t *key, uint8_t *cipher, uint n_block);`
+  - `void gpu_sm4_decrypt(uint8_t *plain, const uint8_t *key, const uint8_t *cipher, uint n_block);`
+  - 注意plain，cipher变量申请空间时需要使用`cudaMallocManaged`函数，不能使用malloc直接声明，具体使用请参考`GPU_SM4_TEST.cu`
 
-### benchmark
+## Static
+- 编译方式
+  - g++ Static_SM4.cpp Static_SM4_TEST.cpp  -std=c++11 -O3 -o Static_SM4
+- 调用接口
+  - `void static_sm4_encrypt(const uint8_t *plain, const uint8_t *key, uint8_t *cipher);`
+  - `void static_sm4_decrypt(uint8_t *plain, const uint8_t *key, const uint8_t *cipher);`
+
+## OpenMP
+- 编译方式
+  - g++ OpenMP_SM4.cpp OpenMP_SM4_TEST.cpp  -std=c++11 -O3 -o OpenMP_SM4  -fopenmp
+- 调用接口
+  - `void openmp_sm4_encrypt(const uint8_t *plain, const uint8_t *key, uint8_t *cipher, uint n_block);`
+  - `void openmp_sm4_decrypt(uint8_t *plain, const uint8_t *key, const uint8_t *cipher, uint n_block);`
+
+## AVX
+- 编译方式
+  - g++ AVX_SM4.cpp AVX_SM4_TEST.cpp -fpermissive  -mavx2 -Wa,-q -std=c++11  -O3 -o AVX_SM4
+
+## benchmark
 - 方法
-测试不同block加密和解密的速度，每个次测试的时候100轮，然后取平均数
 
+ 测试不同block加密和解密的速度，每个测试100轮，然后取平均速度
 - 测试GPU信息
 ```
 Device Name : GeForce GTX 950M.
@@ -25,27 +48,21 @@ textureAlignment : 512.
 deviceOverlap : 1.
 multiProcessorCount : 5.
 ```
-- 测试操作系统
-`Linux myubuntu 4.4.0-130-generic #156-Ubuntu SMP Thu Jun 14 08:53:28 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux`
+- 测试机操作系统
 
-- 测试CPU信息
-`Intel® Core™ i7-4720HQ CPU @ 2.60GHz × 8 `
+ `Linux myubuntu 4.4.0-130-generic #156-Ubuntu SMP Thu Jun 14 08:53:28 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux`
+
+- 测试机CPU信息
+
+ `Intel® Core™ i7-4720HQ CPU @ 2.60GHz × 8 `
 
 - 测试机内存
-`11.7GB`
 
-- 测试结果
+ `11.7GB`
+
+### 测试结果
+- GPU
 ```
-0x68, 0x1e, 0xdf, 0x34, 0xd2, 0x06, 0x96, 0x5e, 0x86, 0xb3, 0xe9, 0x4f, 0x53, 0x6e, 0x42, 0x46,
-0x68, 0x1e, 0xdf, 0x34, 0xd2, 0x06, 0x96, 0x5e, 0x86, 0xb3, 0xe9, 0x4f, 0x53, 0x6e, 0x42, 0x46,
-0x68, 0x1e, 0xdf, 0x34, 0xd2, 0x06, 0x96, 0x5e, 0x86, 0xb3, 0xe9, 0x4f, 0x53, 0x6e, 0x42, 0x46,
-0x68, 0x1e, 0xdf, 0x34, 0xd2, 0x06, 0x96, 0x5e, 0x86, 0xb3, 0xe9, 0x4f, 0x53, 0x6e, 0x42, 0x46,
-
-0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10,
-0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10,
-0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10,
-0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10,
-
 SM4_encrypt>>> blocks: 16, time: 0.000061 s, speed: 3.990530
 SM4_decrypt>>> blocks: 16, time: 0.000061 s, speed: 3.973643
 SM4_encrypt>>> blocks: 256, time: 0.000065 s, speed: 60.543242
@@ -63,11 +80,7 @@ SM4_decrypt>>> blocks: 1048576, time: 0.003379 s, speed: 4734.596287
 SM4_encrypt>>> blocks: 33554432, time: 0.103857 s, speed: 4929.836487
 SM4_decrypt>>> blocks: 33554432, time: 0.105117 s, speed: 4870.776029
 ```
-
-## Static
-- g++ Static_SM4.cpp Static_SM4_TEST.cpp  -std=c++11 -O3 -o Static_SM4
-
-- benchmark
+- Static
 ```
 SM4_encrypt>>> blocks: 16, time: 0.000002 s, speed: 105.688582 Mb/s
 SM4_decrypt>>> blocks: 16, time: 0.000002 s, speed: 102.150889 Mb/s
@@ -85,9 +98,7 @@ SM4_encrypt>>> blocks: 1048576, time: 0.131809 s, speed: 121.387793 Mb/s
 SM4_decrypt>>> blocks: 1048576, time: 0.131697 s, speed: 121.491017 Mb/s
 ```
 1<<25 次方跑的时间太长了，我注释掉了
-
-## OpenMP
-- g++ OpenMP_SM4.cpp OpenMP_SM4_TEST.cpp  -std=c++11 -O3 -o OpenMP_SM4  -fopenmp
+- OpenMP
 ```
 SM4_encrypt>>> blocks: 16, time: 0.000007 s, speed: 35.331494 Mb/s
 SM4_decrypt>>> blocks: 16, time: 0.000007 s, speed: 36.276467 Mb/s
@@ -105,5 +116,20 @@ SM4_encrypt>>> blocks: 1048576, time: 0.141603 s, speed: 112.992300 Mb/s
 SM4_decrypt>>> blocks: 1048576, time: 0.142901 s, speed: 111.965337 Mb/s
 ```
 
-## AVX
-- g++ AVX_SM4.cpp AVX_SM4_TEST.cpp -fpermissive  -mavx2 -Wa,-q -std=c++11  -O3 -o AVX_SM4
+- SM4_encrypt
+
+|        | 16     | 256    | 1024   | 4096   | 65536   | 262144  | 1048576 | 33554432 |
+| ------ | ------ | ------ | ------ | ------ | ------- | ------- | ------- | -------- |
+| GPU    | 3.99   | 60.54  | 206.76 | 823.45 | 2987.48 | 4128.31 | 4742.01 | 4929.83  |
+| Static | 105.68 | 120.26 | 118.86 | 120.15 | 121.85  | 121.42  | 121.39  |          |
+| OpenMP | 35.33  | 103.01 | 113.09 | 115.25 | 115.24  | 116.58  | 112.99  |          |
+| AVX    |        |        |        |        |         |         |         |          |
+
+- SM4_decrypt
+
+|        | 16     | 256    | 1024   | 4096   | 65536   | 262144  | 1048576 | 33554432 |
+| ------ | ------ | ------ | ------ | ------ | ------- | ------- | ------- | -------- |
+| GPU    | 3.97   | 47.6   | 233.76 | 592.52 | 3023.52 | 4316.03 | 4734.59 | 4870.77  |
+| Static | 102.15 | 120.45 | 118.21 | 120.66 | 121.2   | 121.69  | 121.49  |          |
+| OpenMP | 36.27  | 102.85 | 113.16 | 113.57 | 116.6   | 116.16  | 111.96  |          |
+| AVX    |        |        |        |        |         |         |         |          |
