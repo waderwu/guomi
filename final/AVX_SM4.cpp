@@ -1,22 +1,10 @@
 #include <stdlib.h>
-// #include "romangol.h"
-// #include "liarod.h"
 #include <time.h>
 #include "AVX_SM4.h"
-/*
-inline u4 SM4_T_slow(u4 b)
-{
-	const u4 t = make_uint32(Sbox[get_byte(0,b)], Sbox[get_byte(1,b)], Sbox[get_byte(2,b)], Sbox[get_byte(3,b)]);
-
-	// L linear transform
-	return t ^ rotl<2>(t) ^ rotl<10>(t) ^ rotl<18>(t) ^ rotl<24>(t);
-}
-*/
 
 inline u4 SM4_T(u4 b)
 {
 	return Sbox_T[get_byte(0,b)] ^ (Sbox_T8[get_byte(1,b)]) ^ (Sbox_T16[get_byte(2,b)]) ^ (Sbox_T24[get_byte(3,b)]);
-	// return Sbox_T[get_byte(0,b)] ^ rotr<8>(Sbox_T[get_byte(1,b)]) ^ rotr<16>(Sbox_T[get_byte(2,b)]) ^ rotr<24>(Sbox_T[get_byte(3,b)]);
 }
 
 // Variant of T for key schedule
@@ -35,60 +23,6 @@ inline u4 SM4_Tp(u4 b)
   B3 ^= F(B0 ^ B1 ^ B2 ^ rkey[k3]); \
 } while(0)
 
-/*
-* SM4 Encryption
-
-void SM4_enc_block(const u1 in[SM4_BLOCK_SIZE], u1 out[SM4_BLOCK_SIZE], const u4 rkey[SM4_RND_KEY_SIZE / sizeof(u4)])
-{
-	static u4 B0 = load_be<u4>(in, 0);
-	static u4 B1 = load_be<u4>(in, 1);
-	static u4 B2 = load_be<u4>(in, 2);
-	static u4 B3 = load_be<u4>(in, 3);
-
-	// SM4_RNDS( 0,  1,  2,  3, SM4_T_slow);
-	SM4_RNDS( 0,  1,  2,  3, SM4_T);
-	SM4_RNDS( 4,  5,  6,  7, SM4_T);
-	SM4_RNDS( 8,  9, 10, 11, SM4_T);
-	SM4_RNDS(12, 13, 14, 15, SM4_T);
-	SM4_RNDS(16, 17, 18, 19, SM4_T);
-	SM4_RNDS(20, 21, 22, 23, SM4_T);
-	SM4_RNDS(24, 25, 26, 27, SM4_T);
-	SM4_RNDS(28, 29, 30, 31, SM4_T);
-	// SM4_RNDS(28, 29, 30, 31, SM4_T_slow);
-
-	store_be(out, B3, B2, B1, B0);
-}
-
-/*
-* SM4 Decryption
-*/
-/*
-void SM4_dec_block(const u1 in[SM4_BLOCK_SIZE], u1 out[SM4_BLOCK_SIZE], u4 rkey[SM4_RND_KEY_SIZE / sizeof (u4)])
-{
-	static u4 B0 = load_be<u4>(in, 0);
-	static u4 B1 = load_be<u4>(in, 1);
-	static u4 B2 = load_be<u4>(in, 2);
-	static u4 B3 = load_be<u4>(in, 3);
-
-	// SM4_RNDS(31, 30, 29, 28, SM4_T_slow);
-	SM4_RNDS(31, 30, 29, 28, SM4_T);
-	SM4_RNDS(27, 26, 25, 24, SM4_T);
-	SM4_RNDS(23, 22, 21, 20, SM4_T);
-	SM4_RNDS(19, 18, 17, 16, SM4_T);
-	SM4_RNDS(15, 14, 13, 12, SM4_T);
-	SM4_RNDS(11, 10,  9,  8, SM4_T);
-	SM4_RNDS( 7,  6,  5,  4, SM4_T);
-	SM4_RNDS( 3,  2,  1,  0, SM4_T);
-	// SM4_RNDS( 3,  2,  1,  0, SM4_T_slow);
-
-	store_be(out, B3, B2, B1, B0);
-}
-
-#undef SM4_RNDS
-*/
-/*
-* SM4 Key Schedule
-*/
 void SM4_key_schedule(const u1 key[SM4_KEY_SIZE], u4 rkey[SM4_RND_KEY_SIZE / sizeof(u4)])
 {
 	// System parameter or family key
@@ -118,8 +52,13 @@ void SM4_key_schedule(const u1 key[SM4_KEY_SIZE], u4 rkey[SM4_RND_KEY_SIZE / siz
 		rkey[i] = K[i % 4];
 	}
 }
-inline void sms4_avx2_encrypt_8blocks(const unsigned char *in, int *out, const u4 *key)
+inline void sms4_avx2_encrypt_8blocks(const unsigned char *in, int *out, const u4  *key)
 {
+
+	const int *rk = (int *)key;
+	__m256i x0, x1, x2, x3, x4;
+	__m256i t0, t1, t2, t3, t4;
+
 	GET_BLKS(x0, x1, x2, x3, in);
 
 	ROUNDS(x0, x1, x2, x3, x4);
@@ -154,8 +93,12 @@ inline void sms4_avx2_encrypt_8blocks(const unsigned char *in, int *out, const u
 		t3 = _mm256_srli_si256(t3, 4);
 	}
 }
-inline void sms4_avx2_decrypt_8blocks(const unsigned char *in, int *out, const u4 *key)
+inline void sms4_avx2_decrypt_8blocks(const unsigned char *in, int *out,const u4  *key)
 {
+	const int *rk = (int *)key;
+	__m256i x0, x1, x2, x3, x4;
+	__m256i t0, t1, t2, t3, t4;
+
 	GET_BLKS(x0, x1, x2, x3, in);
 
 	ROUNDS_DEC(x0, x1, x2, x3, x4);
