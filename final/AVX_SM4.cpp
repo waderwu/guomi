@@ -178,3 +178,28 @@ void sms4_avx2_encrypt_init(const u4 *key)
 	);
 	sms4_init_sbox32();
 }
+
+void benchmark_sm4_encrypt(const uint8_t *p,  u1 *c, const u4 *key, unsigned int n_block)
+{
+	int turns = 100;
+	clock_t t = clock();
+	for (int i = 0; i<turns; i++)
+	{
+		sms4_avx2_encrypt_blocks(p, (int*)c, key, n_block);
+	}
+	double tt = (double)(clock() - t) / (CLOCKS_PER_SEC*turns);
+	double speed = (double)(16 * n_block) / (1024 * 1024 * tt);
+	printf("SM4_encrypt>>> blocks: %d, time: %f s, speed: %f MB/s\n", n_block, tt, speed);
+}
+void benchmark_sm4_decrypt(const uint8_t *p, u1 *c, const u4 *key, unsigned int n_block)
+{
+	int turns = 100;
+	clock_t t = clock();
+	for (int i = 0; i<turns; i++)
+	{
+		sms4_avx2_encrypt_blocks(p, (int*)c, key, n_block);
+	}
+	double tt = (double)(clock() - t) / (CLOCKS_PER_SEC*turns);
+	double speed = (double)(16 * n_block) / (1024 * 1024 * tt);
+	printf("SM4_encrypt>>> blocks: %d, time: %f s, speed: %f MB/s\n", n_block, tt, speed);
+}
