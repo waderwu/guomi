@@ -813,12 +813,9 @@ static __m256i vindex_0s;
 static __m256i vindex_4i;
 static __m256i vindex_swap;
 static __m256i vindex_read;
-static __m256i x0, x1, x2, x3, x4;
-static __m256i t0, t1, t2, t3, t4;
 static __m256i mask;
-static uint32_t SBOX32L[256 * 256];
-static uint32_t SBOX32H[256 * 256];
-static uint32_t rk[32];
+static u4 SBOX32L[256 * 256];
+static u4 SBOX32H[256 * 256]; 
 
 #define GET_BLKS(x0, x1, x2, x3, in)					\
 	t0 = _mm256_i32gather_epi32((int *)(in+4*0), vindex_4i, 4);	\
