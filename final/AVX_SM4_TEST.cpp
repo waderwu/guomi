@@ -33,7 +33,7 @@ int main(int argc,char **argv)
 
 	u1 *c = plain;
 	u4 i;								// loop var
-	int *pp;
+	int *pp=(int*)c;
 	u4 rk[SM4_RND_KEY_SIZE/sizeof(u4)];
 	SM4_key_schedule(key, rk);		// since the key only has 128bit, there is no need of SIMD
 	sms4_avx2_encrypt_init(rk);
@@ -46,21 +46,12 @@ int main(int argc,char **argv)
 	clock_t t = clock();
 	
 	//outputChar(plain,sizeof(plain));
-	for (int j = 0; j <  round; j++) {
-		for (i = 0, pp = (int*)c; i < sizeof(plain) / (SM4_BLOCK_SIZE * 16); i++, pp += SM4_BLOCK_SIZE * 16 / 4) {
-			sms4_avx2_encrypt_16blocks(plain, pp, rk); //	1 block = 128 bit
-		}
-		i=0;
-	}
+	for (int j = 0; j <  round; j++) 
+		sms4_avx2_encrypt_blocks(plain, pp, rk, sizeof(plain) / (SM4_BLOCK_SIZE));
 	//outputChar(plain,sizeof(plain));
-	for (int j = 0; j <  round; j++) {
-		for (i = 0, pp = (int*)c; i < sizeof(plain) / (SM4_BLOCK_SIZE * 16); i++, pp += SM4_BLOCK_SIZE * 16 / 4) {
-			sms4_avx2_decrypt_16blocks(plain, pp, rk); //	1 block = 128 bit
-		}
-		i=0;
-	}
+	//for (int j = 0; j <  round; j++) 
+	//	sms4_avx2_decrypt_blocks(plain, pp, rk, sizeof(plain) / (SM4_BLOCK_SIZE));
 	//outputChar(plain,sizeof(plain));
-
 	clock_t avg = clock() - t;
 	double tt = (double)(avg)/(CLOCKS_PER_SEC);
 	double speed =(double) (round*16*SM4_BLOCK_SIZE)/(1024*1024*tt);
