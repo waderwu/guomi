@@ -412,6 +412,8 @@ void sms4_avx2_encrypt_16blocks(const unsigned char *in, int *out, const u4 *key
 void sms4_avx2_decrypt_16blocks(const unsigned char *in, int *out, const u4 *key);
 void sms4_avx2_encrypt_blocks(const unsigned char *in, int *out, const u4 *key, u4 BLK_CNT);
 void sms4_avx2_decrypt_blocks(const unsigned char *in, int *out, const u4 *key, u4 BLK_CNT);
+void benchmark_sm4_encrypt(const uint8_t *p, u1 *c, const u4 *key, unsigned int n_block);
+void benchmark_sm4_decrypt(const uint8_t *p, u1 *c, const u4 *key, unsigned int n_block);
 const u1 Sbox[256] =
 {
 	0xD6, 0x90, 0xE9, 0xFE, 0xCC, 0xE1, 0x3D, 0xB7, 0x16, 0xB6, 0x14, 0xC2, 0x28, 0xFB, 0x2C, 0x05,
