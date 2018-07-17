@@ -1,3 +1,4 @@
+# Waderwu
 ## GPU
 - cuda环境配置
   - https://developer.nvidia.com/cuda-downloads 可参照此页面进行安装
@@ -133,3 +134,71 @@ SM4_decrypt>>> blocks: 1048576, time: 0.142901 s, speed: 111.965337 Mb/s
 | Static | 102.15 | 120.45 | 118.21 | 120.66 | 121.2   | 121.69  | 121.49  |          |
 | OpenMP | 36.27  | 102.85 | 113.16 | 113.57 | 116.6   | 116.16  | 111.96  |          |
 | AVX    |        |        |        |        |         |         |         |          |
+
+# cpegg
+## 编译方式、调用接口保持一致
+
+## BenchMark
+- 方法
+  测试不同block加密和解密的速度，每个测试100轮，然后取平均速度
+- 测试机操作系统
+  Windows 10家庭中文版
+- 测试机CPU信息
+  `Intel® Core™ i7-6500U CPU @ 2.50GHz * 4`
+- 测试机内存
+  `3.6GB`
+
+### 测试结果
+
+- Static
+```
+SM4_encrypt>>> blocks: 16, time: 0.000000 s, speed: inf Mb/s
+SM4_decrypt>>> blocks: 16, time: 0.000000 s, speed: inf Mb/s
+SM4_encrypt>>> blocks: 256, time: 0.000030 s, speed: 130.208333 Mb/s
+SM4_decrypt>>> blocks: 256, time: 0.000040 s, speed: 97.656250 Mb/s
+SM4_encrypt>>> blocks: 1024, time: 0.000160 s, speed: 97.656250 Mb/s
+SM4_decrypt>>> blocks: 1024, time: 0.000160 s, speed: 97.656250 Mb/s
+SM4_encrypt>>> blocks: 4096, time: 0.000670 s, speed: 93.283582 Mb/s
+SM4_decrypt>>> blocks: 4096, time: 0.000670 s, speed: 93.283582 Mb/s
+SM4_encrypt>>> blocks: 65536, time: 0.010870 s, speed: 91.996320 Mb/s
+SM4_decrypt>>> blocks: 65536, time: 0.010500 s, speed: 95.238095 Mb/s
+SM4_encrypt>>> blocks: 262144, time: 0.042570 s, speed: 93.962885 Mb/s
+SM4_decrypt>>> blocks: 262144, time: 0.044620 s, speed: 89.645899 Mb/s
+SM4_encrypt>>> blocks: 1048576, time: 0.178200 s, speed: 89.786756 Mb/s
+SM4_decrypt>>> blocks: 1048576, time: 0.172190 s, speed: 92.920611 Mb/s
+```
+
+- OpenMP
+```
+SM4_encrypt>>> blocks: 16, time: 0.000010 s, speed: 24.414062 Mb/s
+SM4_decrypt>>> blocks: 16, time: 0.000000 s, speed: inf Mb/s
+SM4_encrypt>>> blocks: 256, time: 0.000040 s, speed: 97.656250 Mb/s
+SM4_decrypt>>> blocks: 256, time: 0.000040 s, speed: 97.656250 Mb/s
+SM4_encrypt>>> blocks: 1024, time: 0.000170 s, speed: 91.911765 Mb/s
+SM4_decrypt>>> blocks: 1024, time: 0.000170 s, speed: 91.911765 Mb/s
+SM4_encrypt>>> blocks: 4096, time: 0.000710 s, speed: 88.028169 Mb/s
+SM4_decrypt>>> blocks: 4096, time: 0.000680 s, speed: 91.911765 Mb/s
+SM4_encrypt>>> blocks: 65536, time: 0.010540 s, speed: 94.876660 Mb/s
+SM4_decrypt>>> blocks: 65536, time: 0.010690 s, speed: 93.545370 Mb/s
+SM4_encrypt>>> blocks: 262144, time: 0.042700 s, speed: 93.676815 Mb/s
+SM4_decrypt>>> blocks: 262144, time: 0.041610 s, speed: 96.130738 Mb/s
+SM4_encrypt>>> blocks: 1048576, time: 0.168450 s, speed: 94.983675 Mb/s
+SM4_decrypt>>> blocks: 1048576, time: 0.167120 s, speed: 95.739588 Mb/s
+```
+- AVX
+```
+SM4_encrypt>>> blocks: 16, time: 0.000000 s, speed: inf MB/s
+SM4_encrypt>>> blocks: 16, time: 0.000010 s, speed: 24.414062 MB/s
+SM4_encrypt>>> blocks: 256, time: 0.000020 s, speed: 195.312500 MB/s
+SM4_encrypt>>> blocks: 256, time: 0.000020 s, speed: 195.312500 MB/s
+SM4_encrypt>>> blocks: 1024, time: 0.000070 s, speed: 223.214286 MB/s
+SM4_encrypt>>> blocks: 1024, time: 0.000100 s, speed: 156.250000 MB/s
+SM4_encrypt>>> blocks: 4096, time: 0.000340 s, speed: 183.823529 MB/s
+SM4_encrypt>>> blocks: 4096, time: 0.000300 s, speed: 208.333333 MB/s
+SM4_encrypt>>> blocks: 65536, time: 0.004730 s, speed: 211.416490 MB/s
+SM4_encrypt>>> blocks: 65536, time: 0.004590 s, speed: 217.864924 MB/s
+SM4_encrypt>>> blocks: 262144, time: 0.018490 s, speed: 216.333153 MB/s
+SM4_encrypt>>> blocks: 262144, time: 0.018230 s, speed: 219.418541 MB/s
+SM4_encrypt>>> blocks: 1048576, time: 0.073260 s, speed: 218.400218 MB/s
+SM4_encrypt>>> blocks: 1048576, time: 0.074470 s, speed: 214.851618 MB/s
+```
