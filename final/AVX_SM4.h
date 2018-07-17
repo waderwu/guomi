@@ -12,8 +12,8 @@ typedef uint16_t u2;
 typedef uint32_t u4;
 typedef uint64_t u8;
 
-typedef const u1 * const 		const_buf;
-typedef u1 *					buf;
+typedef const u1 * const const_buf;
+typedef u1 *buf;
 
 class NonCopyable
 {
