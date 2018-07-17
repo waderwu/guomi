@@ -62,6 +62,9 @@ inline void sms4_avx2_encrypt_8blocks(const unsigned char *in, int *out, const u
 	GET_BLKS(x0, x1, x2, x3, in);
 
 	ROUNDS(x0, x1, x2, x3, x4);
+
+	//PUT_BLKS(out, x0, x1, x2, x3);
+	
 	t0 = _mm256_shuffle_epi8(x0, vindex_swap);
 	t1 = _mm256_shuffle_epi8(x4, vindex_swap);
 	t2 = _mm256_shuffle_epi8(x3, vindex_swap);
@@ -132,6 +135,14 @@ inline void sms4_avx2_decrypt_8blocks(const unsigned char *in, int *out,const u4
 		t2 = _mm256_srli_si256(t2, 4);
 		t3 = _mm256_srli_si256(t3, 4);
 	}
+}
+void sms4_avx2_encrypt_blocks(const unsigned char *in, int *out, const u4 *key, u4 BLK_CNT) {
+	for (int i = 0; i < BLK_CNT/16; i++)
+		sms4_avx2_encrypt_16blocks(&in[i*SM4_BLOCK_SIZE * 16], &out[i*SM4_BLOCK_SIZE * 16 / sizeof(int)], key);
+}
+void sms4_avx2_decrypt_blocks(const unsigned char *in, int *out, const u4 *key, u4 BLK_CNT) {
+	for (int i = 0; i < BLK_CNT/16; i++)
+		sms4_avx2_decrypt_16blocks(&in[i*SM4_BLOCK_SIZE * 16], &out[i*SM4_BLOCK_SIZE * 16 / sizeof(int)], key);
 }
 void sms4_avx2_encrypt_16blocks(const unsigned char *in, int *out, const u4 *key)
 {
