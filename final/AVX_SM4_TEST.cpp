@@ -1,5 +1,3 @@
-// #include "romangol.h"
-// #include "liarod.h"
 #include "AVX_SM4.h"
 #include <time.h>
 int main(int argc,char **argv)
@@ -14,7 +12,7 @@ int main(int argc,char **argv)
 	*/
 
 	u1 key[SM4_KEY_SIZE] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10};
-	u1 p[16 * SM4_BLOCK_SIZE] = {
+	u1 plain[16 * SM4_BLOCK_SIZE] = {
 		0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10,
 		0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10,
 		0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10,
@@ -33,35 +31,40 @@ int main(int argc,char **argv)
 		0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10,
 	};
 
-	printf("\n\n-----------------------------------------\nFor each Test, encrypt 256 bytes for 1000000/16 rounds");
-	srand(time(NULL));
-	for (int i = 0; i < 16 * SM4_BLOCK_SIZE; i++) {
-		p[i] = rand() % 0xff;
-	}
-	u1 *c = p;
+	u1 *c = plain;
 	u4 i;								// loop var
 	int *pp;
-	u4 rkey[SM4_RND_KEY_SIZE / sizeof(u4)];
+	u4 rk[SM4_RND_KEY_SIZE/sizeof(u4)];
 	SM4_key_schedule(key, rk);		// since the key only has 128bit, there is no need of SIMD
 	sms4_avx2_encrypt_init(rk);
 
 	
 	int round=1000000;
 
+	printf("-----------------------------------------\nFor each Test, encrypt 256 bytes for %d rounds",round);
+
 	clock_t t = clock();
 	
+	//outputChar(plain,sizeof(plain));
 	for (int j = 0; j <  round; j++) {
-		for (i = 0, pp = (int*)c; i < 256 / (SM4_BLOCK_SIZE * 16); i++, pp += SM4_BLOCK_SIZE * 16 / 4) {
-			sms4_avx2_encrypt_16blocks(p, pp, rkey); //	1 block = 128 bit
+		for (i = 0, pp = (int*)c; i < sizeof(plain) / (SM4_BLOCK_SIZE * 16); i++, pp += SM4_BLOCK_SIZE * 16 / 4) {
+			sms4_avx2_encrypt_16blocks(plain, pp, rk); //	1 block = 128 bit
 		}
-		for (i = 0, pp = (int*)c; i < 256 / (SM4_BLOCK_SIZE * 16); i++, pp += SM4_BLOCK_SIZE * 16 / 4) {
-			sms4_avx2_decrypt_16blocks(p, pp, rkey); //	1 block = 128 bit
-		}
-		
+		i=0;
 	}
+	//outputChar(plain,sizeof(plain));
+	for (int j = 0; j <  round; j++) {
+		for (i = 0, pp = (int*)c; i < sizeof(plain) / (SM4_BLOCK_SIZE * 16); i++, pp += SM4_BLOCK_SIZE * 16 / 4) {
+			sms4_avx2_decrypt_16blocks(plain, pp, rk); //	1 block = 128 bit
+		}
+		i=0;
+	}
+	//outputChar(plain,sizeof(plain));
+
 	clock_t avg = clock() - t;
 	double tt = (double)(avg)/(CLOCKS_PER_SEC);
-	double speed =(double) (round*16)/(1024*1024*tt);
-	printf("time: %f s\nspeed: %f \n",tt,speed);
+	double speed =(double) (round*16*SM4_BLOCK_SIZE)/(1024*1024*tt);
+	printf("time: %f s\nspeed: %f MB/s \n",tt,speed);
 	
 }
+	
