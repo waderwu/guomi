@@ -46,7 +46,7 @@ int main(int argc,char **argv)
 	sms4_avx2_decrypt_blocks(plain, (int*)c, rk, 16 );
 	outputChar(plain, sizeof(plain));
 
-	puts("Speen Test.");
+	puts("Speed Test.");
 	u1 *plainn = (u1*)malloc(SM4_BLOCK_SIZE*(1<<20));
 	c = plainn;
 	benchmark_sm4_encrypt(plainn, c, rk, 1 << 4);
