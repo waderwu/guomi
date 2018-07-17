@@ -410,6 +410,8 @@ void SM4_key_schedule(const u1 key[SM4_KEY_SIZE], u4 rkey[SM4_RND_KEY_SIZE / siz
 void sms4_avx2_encrypt_init(const u4 *key);
 void sms4_avx2_encrypt_16blocks(const unsigned char *in, int *out, const u4 *key);
 void sms4_avx2_decrypt_16blocks(const unsigned char *in, int *out, const u4 *key);
+void sms4_avx2_encrypt_blocks(const unsigned char *in, int *out, const u4 *key, u4 BLK_CNT);
+void sms4_avx2_decrypt_blocks(const unsigned char *in, int *out, const u4 *key, u4 BLK_CNT);
 const u1 Sbox[256] =
 {
 	0xD6, 0x90, 0xE9, 0xFE, 0xCC, 0xE1, 0x3D, 0xB7, 0x16, 0xB6, 0x14, 0xC2, 0x28, 0xFB, 0x2C, 0x05,
@@ -827,7 +829,7 @@ static u4 SBOX32H[256 * 256];
 	x2 = _mm256_shuffle_epi8(t2, vindex_swap);			\
 	x3 = _mm256_shuffle_epi8(t3, vindex_swap)
 
-#define PUT_BLKS(in, out, x0, x1, x2, x3)					\
+#define PUT_BLKS(out, x0, x1, x2, x3)					\
 	t0 = _mm256_shuffle_epi8(x0, vindex_swap);			\
 	t1 = _mm256_shuffle_epi8(x1, vindex_swap);			\
 	t2 = _mm256_shuffle_epi8(x2, vindex_swap);			\
