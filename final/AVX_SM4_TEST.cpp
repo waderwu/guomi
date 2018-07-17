@@ -1,6 +1,7 @@
 #include "AVX_SM4.h"
 #include <time.h>
 #include <malloc.h>
+#include <stdlib.h>
 int main(int argc,char **argv)
 {
 	// plain: 01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 10
@@ -11,7 +12,6 @@ int main(int argc,char **argv)
 		to achieve avx2 best performance, encrypt 8 blocks at the same time, the data can be devided into 16 blocks each, each block contains 128bit
 		gmssl has not fully developed the application of the avx2-encryption process, some of the functions may not work properly.
 	*/
-	/*
 	u1 key[SM4_KEY_SIZE] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10};
 	u1 plain[16 * SM4_BLOCK_SIZE] = {
 		0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10,
@@ -31,9 +31,6 @@ int main(int argc,char **argv)
 		0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10,
 		0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10,
 	};
-	*/
-	u1* key = (u1*)malloc(SM4_KEY_SIZE);
-	u1* plain = (u1*)malloc(SM4_BLOCK_SIZE*(1<<20));
 
 	u1 *c = plain;
 	u4 i;								// loop var
@@ -41,19 +38,31 @@ int main(int argc,char **argv)
 	u4 rk[SM4_RND_KEY_SIZE/sizeof(u4)];
 	SM4_key_schedule(key, rk);		// since the key only has 128bit, there is no need of SIMD
 	sms4_avx2_encrypt_init(rk);
-	benchmark_sm4_encrypt(plain, c, rk, 1 << 4);
-	benchmark_sm4_decrypt(plain, c, rk, 1 << 4);
-	benchmark_sm4_encrypt(plain, c, rk, 1 << 8);
-	benchmark_sm4_decrypt(plain, c, rk, 1 << 8);
-	benchmark_sm4_encrypt(plain, c, rk, 1 << 10);
-	benchmark_sm4_decrypt(plain, c, rk, 1 << 10);
-	benchmark_sm4_encrypt(plain, c, rk, 1 << 12);
-	benchmark_sm4_decrypt(plain, c, rk, 1 << 12);
-	benchmark_sm4_encrypt(plain, c, rk, 1 << 16);
-	benchmark_sm4_decrypt(plain, c, rk, 1 << 16);
-	benchmark_sm4_encrypt(plain, c, rk, 1 << 18);
-	benchmark_sm4_decrypt(plain, c, rk, 1 << 18);
-	benchmark_sm4_encrypt(plain, c, rk, 1 << 20);
-	benchmark_sm4_decrypt(plain, c, rk, 1 << 20);
+
+	puts("Accuracy Test.");
+	outputChar(plain, sizeof(plain));
+	sms4_avx2_encrypt_blocks(plain, (int*)c, rk, 16 );
+	outputChar(plain, sizeof(plain));
+	sms4_avx2_decrypt_blocks(plain, (int*)c, rk, 16 );
+	outputChar(plain, sizeof(plain));
+
+	puts("Speen Test.");
+	u1 *plainn = (u1*)malloc(SM4_BLOCK_SIZE*(1<<20));
+	c = plainn;
+	benchmark_sm4_encrypt(plainn, c, rk, 1 << 4);
+	benchmark_sm4_decrypt(plainn, c, rk, 1 << 4);
+	benchmark_sm4_encrypt(plainn, c, rk, 1 << 8);
+	benchmark_sm4_decrypt(plainn, c, rk, 1 << 8);
+	benchmark_sm4_encrypt(plainn, c, rk, 1 << 10);
+	benchmark_sm4_decrypt(plainn, c, rk, 1 << 10);
+	benchmark_sm4_encrypt(plainn, c, rk, 1 << 12);
+	benchmark_sm4_decrypt(plainn, c, rk, 1 << 12);
+	benchmark_sm4_encrypt(plainn, c, rk, 1 << 16);
+	benchmark_sm4_decrypt(plainn, c, rk, 1 << 16);
+	benchmark_sm4_encrypt(plainn, c, rk, 1 << 18);
+	benchmark_sm4_decrypt(plainn, c, rk, 1 << 18);
+	benchmark_sm4_encrypt(plainn, c, rk, 1 << 20);
+	benchmark_sm4_decrypt(plainn, c, rk, 1 << 20);
+	system("pause");
 }
 	
