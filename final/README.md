@@ -116,6 +116,23 @@ SM4_decrypt>>> blocks: 262144, time: 0.034435 s, speed: 116.161827 Mb/s
 SM4_encrypt>>> blocks: 1048576, time: 0.141603 s, speed: 112.992300 Mb/s
 SM4_decrypt>>> blocks: 1048576, time: 0.142901 s, speed: 111.965337 Mb/s
 ```
+- AVX
+```
+SM4_encrypt>>> blocks: 16, time: 0.000001 s, speed: 189.256298 MB/s
+SM4_decrypt>>> blocks: 16, time: 0.000001 s, speed: 189.256298 MB/s
+SM4_encrypt>>> blocks: 256, time: 0.000016 s, speed: 240.977791 MB/s
+SM4_decrypt>>> blocks: 256, time: 0.000016 s, speed: 247.544360 MB/s
+SM4_encrypt>>> blocks: 1024, time: 0.000063 s, speed: 249.441252 MB/s
+SM4_decrypt>>> blocks: 1024, time: 0.000069 s, speed: 227.703294 MB/s
+SM4_encrypt>>> blocks: 4096, time: 0.000256 s, speed: 244.341061 MB/s
+SM4_decrypt>>> blocks: 4096, time: 0.000255 s, speed: 244.848390 MB/s
+SM4_encrypt>>> blocks: 65536, time: 0.004038 s, speed: 247.647350 MB/s
+SM4_decrypt>>> blocks: 65536, time: 0.003955 s, speed: 252.863042 MB/s
+SM4_encrypt>>> blocks: 262144, time: 0.015802 s, speed: 253.138122 MB/s
+SM4_decrypt>>> blocks: 262144, time: 0.015887 s, speed: 251.774380 MB/s
+SM4_encrypt>>> blocks: 1048576, time: 0.063677 s, speed: 251.268395 MB/s
+SM4_decrypt>>> blocks: 1048576, time: 0.063684 s, speed: 251.242315 MB/s
+```
 
 - SM4_encrypt
 
@@ -124,7 +141,7 @@ SM4_decrypt>>> blocks: 1048576, time: 0.142901 s, speed: 111.965337 Mb/s
 | GPU    | 3.99   | 60.54  | 206.76 | 823.45 | 2987.48 | 4128.31 | 4742.01 | 4929.83  |
 | Static | 105.68 | 120.26 | 118.86 | 120.15 | 121.85  | 121.42  | 121.39  |          |
 | OpenMP | 35.33  | 103.01 | 113.09 | 115.25 | 115.24  | 116.58  | 112.99  |          |
-| AVX    |        |        |        |        |         |         |         |          |
+| AVX    |    189.25   |      240.97  |    249.44   |   244.34     |      247.64   |     253.13    |     251.26    |          |
 
 - SM4_decrypt
 
@@ -133,7 +150,7 @@ SM4_decrypt>>> blocks: 1048576, time: 0.142901 s, speed: 111.965337 Mb/s
 | GPU    | 3.97   | 47.6   | 233.76 | 592.52 | 3023.52 | 4316.03 | 4734.59 | 4870.77  |
 | Static | 102.15 | 120.45 | 118.21 | 120.66 | 121.2   | 121.69  | 121.49  |          |
 | OpenMP | 36.27  | 102.85 | 113.16 | 113.57 | 116.6   | 116.16  | 111.96  |          |
-| AVX    |        |        |        |        |         |         |         |          |
+| AVX    |    189.25    |      247.54  |    227.70    |    244.84    |   252.86      |    251.77     |     251.24  |          |
 
 # cpegg
 ## 编译方式、调用接口保持一致

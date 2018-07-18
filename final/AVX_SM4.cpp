@@ -64,7 +64,7 @@ inline void sms4_avx2_encrypt_8blocks(const unsigned char *in, int *out, const u
 	ROUNDS(x0, x1, x2, x3, x4);
 
 	//PUT_BLKS(out, x0, x1, x2, x3);
-	
+
 	t0 = _mm256_shuffle_epi8(x0, vindex_swap);
 	t1 = _mm256_shuffle_epi8(x4, vindex_swap);
 	t2 = _mm256_shuffle_epi8(x3, vindex_swap);
@@ -188,17 +188,17 @@ void benchmark_sm4_encrypt(const uint8_t *p,  u1 *c, const u4 *key, unsigned int
 	double tt = (double)(clock() - t) / (CLOCKS_PER_SEC*turns);
 	double speed = (double)(16 * n_block) / (1024 * 1024 * tt);
 	printf("SM4_encrypt>>> blocks: %d, time: %f s, speed: %f MB/s\n", n_block, tt, speed);
-	
+
 }
 void benchmark_sm4_decrypt(const uint8_t *p, u1 *c, const u4 *key, unsigned int n_block)
 {
-	
+
 	int turns = 100;
 	clock_t t = clock();
 	for (int i = 0; i<turns; i++)
 		sms4_avx2_decrypt_blocks(p, (int*)c, key, n_block);
 	double tt = (double)(clock() - t) / (CLOCKS_PER_SEC*turns);
 	double speed = (double)(16 * n_block) / (1024 * 1024 * tt);
-	printf("SM4_encrypt>>> blocks: %d, time: %f s, speed: %f MB/s\n", n_block, tt, speed);
+	printf("SM4_decrypt>>> blocks: %d, time: %f s, speed: %f MB/s\n", n_block, tt, speed);
 
 }
