@@ -12,7 +12,7 @@ void test(char *msg, int length, char *dgst)
 
   double tt = (double)(clock() - t)/(CLOCKS_PER_SEC*100);
   double speed =(double) (length)/(1024*1024*tt);
-	printf("size: %d \ntime: %f s\nspeed: %f \n",length,tt,speed);
+	printf("size: %d time: %f s speed: %f MB/s\n",length,tt,speed);
 }
 
 int main()
@@ -38,5 +38,4 @@ int main()
 	{
 		printf("%hhX,",dgst[j]);
 	}
-	// printf("%x\n", dgst[0]);
 }
