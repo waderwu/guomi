@@ -224,7 +224,7 @@ void benchmark_sm4_encrypt(const uint8_t *p, const uint8_t *key, uint8_t *c, uin
   }
 	double tt = (double)(clock() - t)/(CLOCKS_PER_SEC*turns);
 	double speed =(double) (16*n_block)/(1024*1024*tt);
-	printf("SM4_encrypt>>> blocks: %d, time: %f s, speed: %f Mb/s\n",n_block,tt,speed);
+	printf("SM4_encrypt>>> blocks: %d, time: %f s, speed: %f MB/s\n",n_block,tt,speed);
 }
 
 void benchmark_sm4_decrypt(uint8_t *p, const uint8_t *key, const uint8_t *c, uint n_block)
@@ -237,5 +237,5 @@ void benchmark_sm4_decrypt(uint8_t *p, const uint8_t *key, const uint8_t *c, uin
   }
 	double tt = (double)(clock() - t)/(CLOCKS_PER_SEC*turns);
 	double speed =(double) (16*n_block)/(1024*1024*tt);
-	printf("SM4_decrypt>>> blocks: %d, time: %f s, speed: %f Mb/s\n",n_block,tt,speed);
+	printf("SM4_decrypt>>> blocks: %d, time: %f s, speed: %f MB/s\n",n_block,tt,speed);
 }

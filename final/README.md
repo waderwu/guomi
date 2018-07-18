@@ -83,38 +83,38 @@ SM4_decrypt>>> blocks: 33554432, time: 0.105117 s, speed: 4870.776029
 ```
 - Static
 ```
-SM4_encrypt>>> blocks: 16, time: 0.000002 s, speed: 105.688582 Mb/s
-SM4_decrypt>>> blocks: 16, time: 0.000002 s, speed: 102.150889 Mb/s
-SM4_encrypt>>> blocks: 256, time: 0.000032 s, speed: 120.266318 Mb/s
-SM4_decrypt>>> blocks: 256, time: 0.000032 s, speed: 120.451742 Mb/s
-SM4_encrypt>>> blocks: 1024, time: 0.000131 s, speed: 118.866489 Mb/s
-SM4_decrypt>>> blocks: 1024, time: 0.000132 s, speed: 118.218960 Mb/s
-SM4_encrypt>>> blocks: 4096, time: 0.000520 s, speed: 120.155337 Mb/s
-SM4_decrypt>>> blocks: 4096, time: 0.000518 s, speed: 120.668018 Mb/s
-SM4_encrypt>>> blocks: 65536, time: 0.008207 s, speed: 121.848837 Mb/s
-SM4_decrypt>>> blocks: 65536, time: 0.008251 s, speed: 121.202131 Mb/s
-SM4_encrypt>>> blocks: 262144, time: 0.032941 s, speed: 121.429148 Mb/s
-SM4_decrypt>>> blocks: 262144, time: 0.032868 s, speed: 121.697399 Mb/s
-SM4_encrypt>>> blocks: 1048576, time: 0.131809 s, speed: 121.387793 Mb/s
-SM4_decrypt>>> blocks: 1048576, time: 0.131697 s, speed: 121.491017 Mb/s
+SM4_encrypt>>> blocks: 16, time: 0.000002 s, speed: 105.688582 MB/s
+SM4_decrypt>>> blocks: 16, time: 0.000002 s, speed: 102.150889 MB/s
+SM4_encrypt>>> blocks: 256, time: 0.000032 s, speed: 120.266318 MB/s
+SM4_decrypt>>> blocks: 256, time: 0.000032 s, speed: 120.451742 MB/s
+SM4_encrypt>>> blocks: 1024, time: 0.000131 s, speed: 118.866489 MB/s
+SM4_decrypt>>> blocks: 1024, time: 0.000132 s, speed: 118.218960 MB/s
+SM4_encrypt>>> blocks: 4096, time: 0.000520 s, speed: 120.155337 MB/s
+SM4_decrypt>>> blocks: 4096, time: 0.000518 s, speed: 120.668018 MB/s
+SM4_encrypt>>> blocks: 65536, time: 0.008207 s, speed: 121.848837 MB/s
+SM4_decrypt>>> blocks: 65536, time: 0.008251 s, speed: 121.202131 MB/s
+SM4_encrypt>>> blocks: 262144, time: 0.032941 s, speed: 121.429148 MB/s
+SM4_decrypt>>> blocks: 262144, time: 0.032868 s, speed: 121.697399 MB/s
+SM4_encrypt>>> blocks: 1048576, time: 0.131809 s, speed: 121.387793 MB/s
+SM4_decrypt>>> blocks: 1048576, time: 0.131697 s, speed: 121.491017 MB/s
 ```
 1<<25 次方跑的时间太长了，我注释掉了
 - OpenMP
 ```
-SM4_encrypt>>> blocks: 16, time: 0.000007 s, speed: 35.331494 Mb/s
-SM4_decrypt>>> blocks: 16, time: 0.000007 s, speed: 36.276467 Mb/s
-SM4_encrypt>>> blocks: 256, time: 0.000038 s, speed: 103.012922 Mb/s
-SM4_decrypt>>> blocks: 256, time: 0.000038 s, speed: 102.850184 Mb/s
-SM4_encrypt>>> blocks: 1024, time: 0.000138 s, speed: 113.085330 Mb/s
-SM4_decrypt>>> blocks: 1024, time: 0.000138 s, speed: 113.167234 Mb/s
-SM4_encrypt>>> blocks: 4096, time: 0.000542 s, speed: 115.245611 Mb/s
-SM4_decrypt>>> blocks: 4096, time: 0.000550 s, speed: 113.572350 Mb/s
-SM4_encrypt>>> blocks: 65536, time: 0.008577 s, speed: 116.587756 Mb/s
-SM4_decrypt>>> blocks: 65536, time: 0.008576 s, speed: 116.600263 Mb/s
-SM4_encrypt>>> blocks: 262144, time: 0.034441 s, speed: 116.141827 Mb/s
-SM4_decrypt>>> blocks: 262144, time: 0.034435 s, speed: 116.161827 Mb/s
-SM4_encrypt>>> blocks: 1048576, time: 0.141603 s, speed: 112.992300 Mb/s
-SM4_decrypt>>> blocks: 1048576, time: 0.142901 s, speed: 111.965337 Mb/s
+SM4_encrypt>>> blocks: 16, time: 0.000007 s, speed: 35.331494 MB/s
+SM4_decrypt>>> blocks: 16, time: 0.000007 s, speed: 36.276467 MB/s
+SM4_encrypt>>> blocks: 256, time: 0.000038 s, speed: 103.012922 MB/s
+SM4_decrypt>>> blocks: 256, time: 0.000038 s, speed: 102.850184 MB/s
+SM4_encrypt>>> blocks: 1024, time: 0.000138 s, speed: 113.085330 MB/s
+SM4_decrypt>>> blocks: 1024, time: 0.000138 s, speed: 113.167234 MB/s
+SM4_encrypt>>> blocks: 4096, time: 0.000542 s, speed: 115.245611 MB/s
+SM4_decrypt>>> blocks: 4096, time: 0.000550 s, speed: 113.572350 MB/s
+SM4_encrypt>>> blocks: 65536, time: 0.008577 s, speed: 116.587756 MB/s
+SM4_decrypt>>> blocks: 65536, time: 0.008576 s, speed: 116.600263 MB/s
+SM4_encrypt>>> blocks: 262144, time: 0.034441 s, speed: 116.141827 MB/s
+SM4_decrypt>>> blocks: 262144, time: 0.034435 s, speed: 116.161827 MB/s
+SM4_encrypt>>> blocks: 1048576, time: 0.141603 s, speed: 112.992300 MB/s
+SM4_decrypt>>> blocks: 1048576, time: 0.142901 s, speed: 111.965337 MB/s
 ```
 - AVX
 ```
@@ -169,38 +169,38 @@ SM4_decrypt>>> blocks: 1048576, time: 0.063684 s, speed: 251.242315 MB/s
 
 - Static
 ```
-SM4_encrypt>>> blocks: 16, time: 0.000000 s, speed: inf Mb/s
-SM4_decrypt>>> blocks: 16, time: 0.000000 s, speed: inf Mb/s
-SM4_encrypt>>> blocks: 256, time: 0.000030 s, speed: 130.208333 Mb/s
-SM4_decrypt>>> blocks: 256, time: 0.000040 s, speed: 97.656250 Mb/s
-SM4_encrypt>>> blocks: 1024, time: 0.000160 s, speed: 97.656250 Mb/s
-SM4_decrypt>>> blocks: 1024, time: 0.000160 s, speed: 97.656250 Mb/s
-SM4_encrypt>>> blocks: 4096, time: 0.000670 s, speed: 93.283582 Mb/s
-SM4_decrypt>>> blocks: 4096, time: 0.000670 s, speed: 93.283582 Mb/s
-SM4_encrypt>>> blocks: 65536, time: 0.010870 s, speed: 91.996320 Mb/s
-SM4_decrypt>>> blocks: 65536, time: 0.010500 s, speed: 95.238095 Mb/s
-SM4_encrypt>>> blocks: 262144, time: 0.042570 s, speed: 93.962885 Mb/s
-SM4_decrypt>>> blocks: 262144, time: 0.044620 s, speed: 89.645899 Mb/s
-SM4_encrypt>>> blocks: 1048576, time: 0.178200 s, speed: 89.786756 Mb/s
-SM4_decrypt>>> blocks: 1048576, time: 0.172190 s, speed: 92.920611 Mb/s
+SM4_encrypt>>> blocks: 16, time: 0.000000 s, speed: inf MB/s
+SM4_decrypt>>> blocks: 16, time: 0.000000 s, speed: inf MB/s
+SM4_encrypt>>> blocks: 256, time: 0.000030 s, speed: 130.208333 MB/s
+SM4_decrypt>>> blocks: 256, time: 0.000040 s, speed: 97.656250 MB/s
+SM4_encrypt>>> blocks: 1024, time: 0.000160 s, speed: 97.656250 MB/s
+SM4_decrypt>>> blocks: 1024, time: 0.000160 s, speed: 97.656250 MB/s
+SM4_encrypt>>> blocks: 4096, time: 0.000670 s, speed: 93.283582 MB/s
+SM4_decrypt>>> blocks: 4096, time: 0.000670 s, speed: 93.283582 MB/s
+SM4_encrypt>>> blocks: 65536, time: 0.010870 s, speed: 91.996320 MB/s
+SM4_decrypt>>> blocks: 65536, time: 0.010500 s, speed: 95.238095 MB/s
+SM4_encrypt>>> blocks: 262144, time: 0.042570 s, speed: 93.962885 MB/s
+SM4_decrypt>>> blocks: 262144, time: 0.044620 s, speed: 89.645899 MB/s
+SM4_encrypt>>> blocks: 1048576, time: 0.178200 s, speed: 89.786756 MB/s
+SM4_decrypt>>> blocks: 1048576, time: 0.172190 s, speed: 92.920611 MB/s
 ```
 
 - OpenMP
 ```
-SM4_encrypt>>> blocks: 16, time: 0.000010 s, speed: 24.414062 Mb/s
-SM4_decrypt>>> blocks: 16, time: 0.000000 s, speed: inf Mb/s
-SM4_encrypt>>> blocks: 256, time: 0.000040 s, speed: 97.656250 Mb/s
-SM4_decrypt>>> blocks: 256, time: 0.000040 s, speed: 97.656250 Mb/s
-SM4_encrypt>>> blocks: 1024, time: 0.000170 s, speed: 91.911765 Mb/s
-SM4_decrypt>>> blocks: 1024, time: 0.000170 s, speed: 91.911765 Mb/s
-SM4_encrypt>>> blocks: 4096, time: 0.000710 s, speed: 88.028169 Mb/s
-SM4_decrypt>>> blocks: 4096, time: 0.000680 s, speed: 91.911765 Mb/s
-SM4_encrypt>>> blocks: 65536, time: 0.010540 s, speed: 94.876660 Mb/s
-SM4_decrypt>>> blocks: 65536, time: 0.010690 s, speed: 93.545370 Mb/s
-SM4_encrypt>>> blocks: 262144, time: 0.042700 s, speed: 93.676815 Mb/s
-SM4_decrypt>>> blocks: 262144, time: 0.041610 s, speed: 96.130738 Mb/s
-SM4_encrypt>>> blocks: 1048576, time: 0.168450 s, speed: 94.983675 Mb/s
-SM4_decrypt>>> blocks: 1048576, time: 0.167120 s, speed: 95.739588 Mb/s
+SM4_encrypt>>> blocks: 16, time: 0.000010 s, speed: 24.414062 MB/s
+SM4_decrypt>>> blocks: 16, time: 0.000000 s, speed: inf MB/s
+SM4_encrypt>>> blocks: 256, time: 0.000040 s, speed: 97.656250 MB/s
+SM4_decrypt>>> blocks: 256, time: 0.000040 s, speed: 97.656250 MB/s
+SM4_encrypt>>> blocks: 1024, time: 0.000170 s, speed: 91.911765 MB/s
+SM4_decrypt>>> blocks: 1024, time: 0.000170 s, speed: 91.911765 MB/s
+SM4_encrypt>>> blocks: 4096, time: 0.000710 s, speed: 88.028169 MB/s
+SM4_decrypt>>> blocks: 4096, time: 0.000680 s, speed: 91.911765 MB/s
+SM4_encrypt>>> blocks: 65536, time: 0.010540 s, speed: 94.876660 MB/s
+SM4_decrypt>>> blocks: 65536, time: 0.010690 s, speed: 93.545370 MB/s
+SM4_encrypt>>> blocks: 262144, time: 0.042700 s, speed: 93.676815 MB/s
+SM4_decrypt>>> blocks: 262144, time: 0.041610 s, speed: 96.130738 MB/s
+SM4_encrypt>>> blocks: 1048576, time: 0.168450 s, speed: 94.983675 MB/s
+SM4_decrypt>>> blocks: 1048576, time: 0.167120 s, speed: 95.739588 MB/s
 ```
 - AVX
 ```
