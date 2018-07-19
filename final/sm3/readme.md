@@ -27,6 +27,17 @@
   size: 16384 time: 0.000066 s speed: 237.462006 MB/s
   size: 1048576 time: 0.004103 s speed: 243.715788 MB/s
   ```
+  - AVX
+  ```
+Speed Test
+size: 16 time: 0.000001 s speed: 61.035156 MB/s
+size: 64 time: 0.000002 s speed: 122.070313 MB/s
+size: 256 time: 0.000005 s speed: 195.312500 MB/s
+size: 1024 time: 0.000018 s speed: 217.013889 MB/s
+size: 8192 time: 0.000109 s speed: 286.697248 MB/s
+size: 16384 time: 0.000212 s speed: 294.811321 MB/s
+size: 1048576 time: 0.013627 s speed: 293.534894 MB/s
+```
   - GmSSL
   ```
   type      16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes  16384 bytes
