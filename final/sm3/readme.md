@@ -52,9 +52,11 @@
 - AVX
 ```
 size: 16 time: 0.000001 s speed: 61.035156 MB/s
-size: 64 time: 0.000002 s speed: 122.070313 MB/s
-size: 256 time: 0.000004 s speed: 244.140625 MB/s
-size: 1024 time: 0.000015 s speed: 260.416667 MB/s
-size: 8192 time: 0.000119 s speed: 262.605042 MB/s
-size: 16384 time: 0.000239 s speed: 261.506276 MB/s
+size: 64 time: 0.000003 s speed: 81.380208 MB/s
+size: 256 time: 0.000005 s speed: 195.312500 MB/s
+size: 1024 time: 0.000019 s speed: 205.592105 MB/s
+size: 8192 time: 0.000144 s speed: 217.013889 MB/s
+size: 16384 time: 0.000247 s speed: 253.036437 MB/s
+size: 1048576 time: 0.015283 s speed: 261.728718 MB/s
 ```
+
