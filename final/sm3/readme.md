@@ -48,6 +48,8 @@ size: 1048576 time: 0.013627 s speed: 293.534894 MB/s
 
 使用Windows Visual Studio x86 Release编译方式编译
 
+For Linux, use `g++ sm3-hash-4way.c AVX_test.cpp -fpermissive -mavx2 -Wa,-q -std=c++11 -O3 -o AVX_SM3`
+
  - 测试机操作系统
  
 `Windows 10家庭中文版`
@@ -60,10 +62,7 @@ size: 1048576 time: 0.013627 s speed: 293.534894 MB/s
  
 `3.6GB`
 ## benchmark
-- 编译方式
 
- `g++ sm3-hash-4way.c AVX_test.cpp -fpermissive -mavx2 -Wa,-q -std=c++11 -O3 -o AVX_SM3`
- 
 - AVX
 ```
 size: 16 time: 0.000001 s speed: 61.035156 MB/s
